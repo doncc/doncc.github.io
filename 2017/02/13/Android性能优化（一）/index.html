@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Android性能优化（一） | Darkbug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="接下来的两篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可批评指点。 本文会从Android渲染机制、电量的优化、内存管理与GC等方面来介绍如何进行性能的提升。 话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化（一）">
+<meta property="og:url" content="http://www.doncc.org/2017/02/13/Android性能优化（一）/index.html">
+<meta property="og:site_name" content="Darkbug">
+<meta property="og:description" content="接下来的两篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可批评指点。 本文会从Android渲染机制、电量的优化、内存管理与GC等方面来介绍如何进行性能的提升。 话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/1.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/2.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/3.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/4.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/5.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/6.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/7.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/8.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/9.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/10.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/11.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/12.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/13.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/14.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/15.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/16.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/17.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/18.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/19.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/20.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/21.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/22.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/23.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/24.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/25.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/26.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/27.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/28.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/29.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/30.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/31.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/33.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/34.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/35.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/36.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/37.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/38.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/39.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/40.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/41.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/42.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/43.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/44.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/45.png">
+<meta property="og:updated_time" content="2017-12-26T08:10:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能优化（一）">
+<meta name="twitter:description" content="接下来的两篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可批评指点。 本文会从Android渲染机制、电量的优化、内存管理与GC等方面来介绍如何进行性能的提升。 话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。">
+<meta name="twitter:image" content="http://images.doncc.org/img/Android性能优化/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Darkbug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Darkbug</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">永远不要去怨恨那些可被充分解释为愚蠢的事情。--汉隆的剃刀</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.doncc.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android性能优化（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/13/Android性能优化（一）/" class="article-date">
+  <time datetime="2017-02-13T01:00:37.000Z" itemprop="datePublished">2017-02-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android性能优化（一）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>接下来的两篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可批评指点。</p>
+<p>本文会从Android渲染机制、电量的优化、内存管理与GC等方面来介绍如何进行性能的提升。</p>
+<p>话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。</p>
+<a id="more"></a>
+<h1 id="一、Android渲染机制"><a href="#一、Android渲染机制" class="headerlink" title="一、Android渲染机制"></a>一、Android渲染机制</h1><p>想要讲这部分的内容，首先我们先来看一个很现实的问题：</p>
+<p>Q1：为何我的手机那么卡？为何我滑动列表总感觉那么卡顿？</p>
+<p>恭喜你，已经接触到了程序的一些性能上的问题了。那么这样的问题是如何产生的呢？欲想知其因，必先了解Android渲染时候的工作机制，从工作机制上来反看自己程序上的问题。</p>
+<p>图片想要显示在屏幕上，离不开纹理及图形多边形的帮忙。图片基本都有纹理和多边形来构成。这里引用官方的图能更好的解释这句话。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/1.png" alt=""></p>
+<p>由图可知，CPU负责计算图形UI的内容，将UI内容计算成多边形（polygons）、纹理（textures），调用OpenGL ES的API，然后将计算结果传递给GPU来处理，然后进行光栅化（Rasterization）绘制在屏幕（Screen）上。GPU相对于CPU来讲，更专注于对图形的绘制，没有CPU负责的工作那么多。所以交给GPU计算，效率能更高些。你可以理解成GPU专门是做大菜的厨子。�</p>
+<p>你肯定读到这就已经蒙圈了，讲这个跟我们要做的Android性能优化有毛线关系？别急，下面我们就会知道为什么了。</p>
+<h2 id="1）用辅助工具检测视图性能"><a href="#1）用辅助工具检测视图性能" class="headerlink" title="1）用辅助工具检测视图性能"></a>1）用辅助工具检测视图性能</h2><p>我们再回头看图里的关系，每次渲染时候，CPU计算的内容转移到GPU内，都是会花费时间的，通过OpenGL ES将渲染的纹理保存在GPU的Memory里保存。我特意请教过做游戏的哥们儿，每次图形的大小要发生变化时，都要进行计算一次，那么相当于传递一次信息；如果每次只是位置发生了变化，那么不会从CPU传递信息到GPU，只交给GPU处理就够了。so我们Android内的资源，诸如Bitmap，Drawable，都会统一打包到纹理（Texture）中，传递到GPU中。那么随着UI内容越来越丰富，GPU要渲染绘制的内容也就越来越多，花费的时间也就越来越多。</p>
+<p>幸好Android为我们已经测量出来一个标准的恒定，约定每一帧的绘制，要在16ms内处理完CPU、GPU的计算、绘制、渲染等工作，就能保证程序的效果流畅。换句话说，超过这个时间，用户就会感觉到卡顿了。</p>
+<p>那么，我们怎能知道自己的项目、程序是否会有可能给用户带来不好的体验呢？没关系，Android为我们考虑得非常周到。我们可以运用安卓开发者选项，也就是你手机里的设置-&gt;开发者选项-&gt;GPU显示配置文件-&gt;以条的形式显示于屏幕，点开后，当你滑动你的程序比如列表页面，屏幕下方会有绿色一个基准线，在这个基准线内是比较好的性能；如果发现渲染条过大，说明你的程序性能上确实有不小的问题。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/2.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/3.png" alt=""></p>
+<p>从图中我们可以看到，有不同颜色的条，这些条代表着不同的问题。我们可以参考Android官方给我们提供的图色说明：</p>
+<p>参考官方资料：<a href="https://developer.android.com/topic/performance/rendering/profile-gpu.html" target="_blank" rel="noopener">https://developer.android.com/topic/performance/rendering/profile-gpu.html</a></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/4.png" alt=""></p>
+<ul>
+<li><strong>Swap Buffers</strong>：此区域是交换缓冲区，用来表示CPU来等待GPU完成工作的消耗时间。时间越长，条目越大；</li>
+<li><strong>Command Issue</strong>：绘制或者重绘列表时，用来反馈Android 2D图形渲染器发送命令到OpenGL所花费的时间。时间越长，说明渲染花费的时间越长；</li>
+<li><strong>Sync &amp; Upload</strong>：准备当前界面上待绘制的图片所消耗的时间，为了减少该段区域的执行时间，我们可以减少屏幕上的图片数量或者是缩小图片本身的大小。</li>
+<li><strong>Draw</strong>：创建和更新视图列表时所花费的时间。如花费很多时间，说明有可能是自定义视图太过复杂，或者在onDraw里做的工作太过复杂；</li>
+<li><strong>Measure &amp; Layout</strong>：表示的是布局的onMeasure与onLayout所花费的时间，如时间太长，就需要仔细检查自己的布局是不是有严重性能上的问题。</li>
+<li><strong>Animation</strong>：表示的是计算执行动画所需要花费的时间，包含的动画有ObjectAnimator，ViewPropertyAnimator，Transition等等。一旦这里的执行时间过长，就需要检查是不是使用了非官方的动画工具或者是检查动画执行的过程中是不是触发了读写操作等等。</li>
+<li><strong>Input Handling</strong>：表示的是系统处理输入事件所耗费的时间，粗略等于对于的事件处理方法所执行的时间。一旦执行时间过长，说明在处理用户的输入事件的地方执行了复杂的操作。</li>
+<li><strong>Misc/Vsync Delay</strong>：我们可以在应用的Log日志里面看到这样一行提示：Skipped XXX frames! The application may be doing too much work on its main thread。这说明我们在主线程执行了太多的任务，导致UI渲染跟不上vSync的信号而出现掉帧的情况。</li>
+</ul>
+<p>我们除了通过条形图能看出程序在整体上的性能，还可以通过图形过度绘制工具来找到哪些布局是做了过度绘制。在设置-&gt;开发者选项-&gt;调试GPU过度绘制-&gt;显示过度绘制区域，然后我们能根据不同的颜色，来区分哪些布局进行了过度绘制：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/5.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/6.png" alt=""></p>
+<p>这里不同颜色代表不同的含义：</p>
+<ul>
+<li>原色：没有进行过度绘制</li>
+<li>蓝色：1次过度绘制</li>
+<li>绿色：2次过度绘制</li>
+<li>粉色：次过度绘制</li>
+<li>红色：&gt;=4次过度绘制</li>
+</ul>
+<p>我们应避免过度绘制，所以可以找到过度绘制的布局，进行如下调整：</p>
+<ul>
+<li>尽量避免控件的重叠摆放</li>
+<li>使用自定义视图时，使用clipRect属性减少重绘区域</li>
+<li>当控件与背景布局同色时，尽量移除控件，减少绘制成本。</li>
+</ul>
+<p>当然，除此之外，我们还可以通过Android Studio自带的GPU分析工具来去分析。比如想要开启模拟器上的GPU分析工具，只需找到模拟器的设置-&gt;开发者选项-&gt;GPU显示配置文件-&gt;在adb shell dumpsys gfxinfo中，然后就可以在Android Studio中看到GPU的分析内容了。</p>
+<p>OK，到此为止，我们可以通过各种工具，能大概了解到，程序内在渲染上有什么样的问题。接下来我们将对这些问题进行优化、修改。</p>
+<h2 id="2）Alpha透明度的视图，会带来意外的代价"><a href="#2）Alpha透明度的视图，会带来意外的代价" class="headerlink" title="2）Alpha透明度的视图，会带来意外的代价"></a>2）Alpha透明度的视图，会带来意外的代价</h2><p>有时我们可以运用对视图透明度的变化，来展现更丰富的效果。殊不知，透明度的变化，其实会给UI视图带来不小的负担。</p>
+<p>要想明白其原因，先从工作机制了解开始。View视图的绘制，一般情况下需要渲染一次。但是如果我们的视图带有Alpha透明度的属性，那么渲染时候需要渲染至少两次。因为alpha是针对视图本身的变化，首先需要知道底层View的元素是什么，确定了View位置后才能进一步对视图元素进行透明度的变化。</p>
+<p>事实上我们可以运用GPU渲染到屏幕上，因为GPU对界面上的元素进行透明度、旋转等变化更为高效。我们可以借鉴官方图来说明下工作的效率有多高：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/7.png" alt=""></p>
+<p>如果我们必须需要运用alpha进行渲染，那么我们可以运用代码来进行渲染：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">View.setLayerType(View.LAYER_TYPE_HARDWARE, <span class="keyword">null</span>);</span><br><span class="line">ViewPropertyAnimator.alpha(<span class="number">0.0f</span>).withLayer();</span><br><span class="line">View.setLayerType(View.LAYER_TYPE_NONE, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>官方已标注，我们可以从SDK16开始使用上述方法。</p>
+<h2 id="3）减少在onDraw-方法中产生的代价"><a href="#3）减少在onDraw-方法中产生的代价" class="headerlink" title="3）减少在onDraw()方法中产生的代价"></a>3）减少在onDraw()方法中产生的代价</h2><p>我们都知道，在UI线程中，有诸如onDraw()之类的绘制方法。在onDraw()操作比如分配对象的工作，在短时间内是没什么太大影响。当然我们都知道，在不断渲染UI视图上，onDraw()方法被不断调用，这就有可能对内存带来更大的负担。我们应该避免在onDraw()内分配过多的对象，从而减少对内存的压力。例如我们在Canvas里，在分配画笔时，可以将画笔对象初始化在draw方法之外。</p>
+<p>到这里，我们可以总结出一些在渲染上有所提升的经验：</p>
+<p><strong>1）减少布局的层级结构，优化布局层</strong>：可以通过Android布局层级工具来分析，在DDMS里的Hierarchy Viewer可以帮助我们，或者Android Studio里的Android Monitor左侧边栏的Layout Inspector工具来检测层级结构。这里我们就不再深入探究工具的使用方式了，具体的使用方法可见其他文章。</p>
+<p><strong>2）使用clipRect提高绘制性能</strong>：在开发中不可避免对图形的形状大小等元素进行变化，使用Canvas内的clipRect能更高效率的进行操作，从而减少更多其他方式操作UI对资源的消耗。</p>
+<p><strong>3）减少Alpha视图的产生</strong>：避免针对透明视图的二次渲染，减少渲染的代价。</p>
+<p><strong>4）使用GPU进行图形渲染</strong>：用GPU来对UI的渲染，能提高程序的整体表现性能。</p>
+<h1 id="二、电量的优化"><a href="#二、电量的优化" class="headerlink" title="二、电量的优化"></a>二、电量的优化</h1><p>电量上的优化其实是作为程序优化方案的最后一步。也就是说，决定你程序写得是不是最优的方法，最后一步才是进行对程序电量的优化。深刻记着笔者在做为开发仔一枚时，公司测试人员在做完所有明显BUG的测试最后，进行电量的测试。虽然当时的测试方法过于笼统，但可见电量的消耗其实对程序运行时效率的影响也是不可忽略的。</p>
+<p>闲话少说，书归正传。</p>
+<p>首先我们能想到，什么东西能是喝电，啊不是，是吃电大户？GPS模块、蜂窝模块、WiFi模块、各传感器模块等等。这是直观就能想到的东东。当然也不缺乏代码写得不好导致的电量浪费：过于频繁的数据通信、预加载太多的信息进行缓存等。</p>
+<p>对于硬件的及时关闭，当然这都是手动关闭的硬件，这算不上什么优化；</p>
+<p>但是我们如果利用GPS进行定位，或者运用蜂窝网络进行数据通信，这里就可以有进行优化的余地。Android官方给了我们更好的解决方案。</p>
+<p>Q2：我需要请求服务器数据，这对我的设备电量消耗能有多大影响</p>
+<p>如果请求次数只有一次，那么我们可以基本忽略电量的消耗了，简直就是九牛一毛；但如果你有N次，那么你就不得不需要考虑你的代码对设备电量的消耗问题了。</p>
+<p>比如我们请求网络，这里我们引用官方的一张图片来说明下：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/8.png" alt=""></p>
+<p>这是请求网络的一个流程，那么真正蜂窝模块的电量消耗会有如下情况：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/9.png" alt=""></p>
+<p>我们会看到，当设备蜂窝模块被调用起来后，瞬间消耗的电量是很大的，激活后的几十秒内，还会继续消耗电量，直到没有新的网络数据交互才休眠。如果我们减少这一段时间的调用次数，就等同于减少电量的消耗。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/10.png" alt=""></p>
+<p>上图中红色部分是消耗电量的部分，红色间隔部分是设备休眠状态。当你的程序电量检测检测到红色之间间隔很多的地方，即是可以进行电量优化的部分。</p>
+<p>这里我们还要了解一个概念，我们操作手机APP，无外乎有两种情况需要通信，及立即刷新得到最新数据，或者不是必要立即与服务器进行同步的任务。</p>
+<h2 id="1）进行任务的延迟处"><a href="#1）进行任务的延迟处" class="headerlink" title="1）进行任务的延迟处"></a>1）进行任务的延迟处</h2><p>假想我们如果把一些不紧急的任务，诸如设置的上传本地配置或信息，我们可以将数据“暂时”存储起来，等到某一时间点，集中把这些数据一起同步到服务器，这样比同样时间段内，不断的去上传数据到服务器所消耗的电量更少。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/11.png" alt=""></p>
+<p>当我们的任务集中进行处理后，所消耗的电量我们可以看到下图，有更好的优化了。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/12.png" alt=""></p>
+<p>事实上我们可以有更好的解决方案，使用WakeLock或者JobScheduler来帮助我们有计划的进行任务调度，从而尽最大的能力节省宝贵的电量。</p>
+<p>根据上面我们讲的，可以集中时间去进行任务的处理。使用WakeLock.acquice()方法，设置超时时间就可以。但是事实就这么简单么？我觉得不是，如果我们在设置唤醒超时的同时，在请求网络，因为网络请求有一种返回结果时间的不确定性，有可能有延迟返回，那么有可能本来你5s要做的事情，偏偏没有获取到信息，只能等到1个小时以后再来获取到。很显然这对于一个即时聊天的需求，是万万不能符合的。那么我们该怎么做呢？</p>
+<p>讲之前我们再来看下官方的图片，能更好的说明：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/13.png" alt=""></p>
+<p>这是什么意思呢？我们如果有个定时的任务，需要15分钟唤醒同步一次，那么我们可以进行同步。如果系统帮我检测到，有个更好的时间去同步比如20分钟，那么对于设备来讲就能延长一些唤醒的时间，也就能节省一部分电量。那么我们可以使用官方推荐的JobScheduler是最好不过的选择了，它可以根据系统所分配到的任务，计算出更好的唤醒设备时间，能集中处理你的任务，例如上面所讲述过的样子，从而节约电量。</p>
+<p>我们再来看官方的另一组图，更能直观的观察到优化的结果：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/14.png" alt=""></p>
+<p>我们手机内不同的APP在不同时间分别调用蜂窝网络进行数据请求。这样做确实损耗很多的电量。如果我们像下方的样子进行处理，势必会减少几次电量的损耗过程：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/15.png" alt=""></p>
+<p>对于演示处理，我们可以有如下的方法进行处理：</p>
+<ul>
+<li>JobSchedulor：Android内置，能更方便的使用</li>
+<li>AlarmManager：设置定时操作任务。当然这个不是非常推崇的方法，因为有可能带来不可预见的结果</li>
+<li>SyncAdapter：这个方法也可以参考官方的课程：<a href="http://developer.android.com/training/sync-adapters/index.html" target="_blank" rel="noopener">http://developer.android.com/training/sync-adapters/index.html</a></li>
+</ul>
+<p>Q3：我有个需求，需要不断的去服务器进行轮询，查询是否有新数据以便更新自己本地内容。</p>
+<p>作为当时年轻的我，选择了在Service中写个定时任务，不断地定时去服务器进行拉去数据。现在看来简直是荒唐。这样长时间下来，会让手机不断地去进行调起蜂窝模块，不断的进行数据请求，直到电量耗尽。。。[/可怕脸]。</p>
+<p>其实Google大大已经有更好的<code>GCMNetworkManager</code>来帮助我们实现功能了。可惜我们用不了。。。[/流泪脸]不说了你懂得。</p>
+<p>如果有能力，我们可以简单的写一套请求逻辑，判断什么时候联的是WiFi，什么时候是蜂窝网络。多少还是能节省点资源的。</p>
+<p>Q4：我是一个聊天狂，经常聊天会发现我的手机耗电很快，能否把我的聊天程序做到没那么耗电么？</p>
+<p>要想解释这个问题，我们首先需要理解手机设备硬件与休眠之间的关系：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/16.png" alt=""></p>
+<p>我们为了能及时接收到最新的数据，往往需要不断的唤醒设备去服务器检查最新数据以便同步。那么很显然，不断唤醒设备会大量消耗你的电量。这是很不公平的交易。</p>
+<p>那么我们有什么办法，减少屏幕电量的次数来减少电量的消耗呢？其实很简单，Google为我们准备了<code>PowerManager.WakeLock</code>的API来帮助我们保持CPU的工作，以防屏幕变暗直至关闭。当然如果你长时间电量屏幕，当然也是耗电的。这就需要我们自己来根据业务需求来定夺我们该如何进行调整了。</p>
+<h2 id="2）进行高效的定位操作"><a href="#2）进行高效的定位操作" class="headerlink" title="2）进行高效的定位操作"></a>2）进行高效的定位操作</h2><p>虽然原生的定位方法在我们这里不能正常发挥其功力，但是作为开发者，我们必须明白一个道理，那就是定位的精准性和你的程序之间的关系。</p>
+<p>Android为我们提供了四种定位的精度，这里我们依旧引入官方的图来解释其关系：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/17.png" alt=""></p>
+<p>不难发现，我们需要根据自己程序的需要，来确定程序需要什么样的精准的数据，当然耗电的代价也是随着增长的。</p>
+<p>Q5：我需要不断调用GPS定位，但是还担心耗电。</p>
+<p>虽然Android为我们已经提供了<code>LocationRequest.sendInterval()</code>方法来控制获取位置的间隔时间，但是还是会有可能位置不更新，依然去请求位置。这样就造成了没有必要的浪费。那么我们该怎么办呢？事实上我们可以来判断两次位置是否变化，从而用代码来控制获取时间的间隔。从而达到省电的目的。我们这里引用官方的图来解释更为直观：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/18.png" alt=""></p>
+<p>我们看见下面空挡区域，因为两次定位位置一致，我们可以让等待时间更长，从而我们可以省去很多电量。</p>
+<p>总结来说，我们可以通过以下的方法，来间接减少电量的消耗：</p>
+<ul>
+<li>对于一些非及时获取的信息，比如歌曲的上传工作，图片的处理工作，或者本地配置上传的工作等，可以等待到设备处于充电状态，或者电量充足时再来操作，亦可以等待到固定电量以上；</li>
+<li>可以采用预读取的方法，来缓存你的数据，减少频繁激活蜂窝网络的次数；</li>
+<li>屏幕是耗电大户，减少屏幕的唤醒次数和时间，使用WakeLock来处理唤醒后的问题，并且要在处理完尽快及时关闭或执行睡眠操作。</li>
+<li>可以使用JobScheduler来帮助我们把任务整理，由系统帮我们决定何时请求网络进行数据交互能更好。</li>
+</ul>
+<h1 id="三、Android内存管理与GC"><a href="#三、Android内存管理与GC" class="headerlink" title="三、Android内存管理与GC"></a>三、Android内存管理与GC</h1><p>内存的优化则是Android优化过程的重中之重，也是优化涵盖面最多的一种方案。泛泛的讲内存优化，不能很好理解。这里我们从逐个小点来去讲，总体就能汇聚成一个大的解决方案。</p>
+<h2 id="1）Android性能与内存抖动"><a href="#1）Android性能与内存抖动" class="headerlink" title="1）Android性能与内存抖动"></a>1）Android性能与内存抖动</h2><p>顾名思义，内存抖动从字面意思是不断的上下快速浮动。那么我们什么情景会不断的抖动呢？比如我们在很短的时间内，创建大量对象，并且又在很短时间内释放对象，那么这就会产生内存抖动。如果来讲内存抖动，我们首先得需要了解内存在Android里的工作方法。</p>
+<p>虽然Android内有自动管理内存的机制，但是如果你不恰当的使用，仍然会有产生很严重的问题。</p>
+<p>在Android里，有个三级Generation的内存模型，它可以让系统分辨内存中不同内存的数据类型来进行不同的GC操作。这里我们引用官方一个图片来解释：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/19.png" alt=""></p>
+<p>这里我们能看到有不同的区域，Young Generation是可以存储刚刚分配的对象，当这个对象停留一段时间到达一定程度后，可以移动到Old Generation区域，直至移动到Permanent Generation区域。这里每个区域都有固定的大小，那么如果一旦对象的总大小到达了某一区域的固定大小的阈值，就会触发GC操作，为的就是腾出更多的空间来给其他新生成的对象，就像下图所展示的这个样子：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/20.png" alt=""></p>
+<p>那么我们短时间内生成的大量对象，集中在Young Generation区域，当到达Young Generation区域的阈值时，触发了GC，这也就是我们看到了一次回收。</p>
+<p>幸好我们这里可以借助很多工具来查看APP内存的变化。Android Studio内的Memory Monitor就可以来检测。如下图，就是一个典型的抖动效果。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/21.png" alt=""></p>
+<p>当然我们也可以借助<strong>Heap and Allocation Tracker</strong>来观察在短时间内同一个栈中不同对象的进出。DDMS里呢哦。</p>
+<p>当然这些都是帮助我们发现问题。解决问题呢？</p>
+<ul>
+<li>减少在for循环中分配对象，占用内存。可以将对象移到循环体之外；</li>
+<li>减少在onDraw创建对象。</li>
+<li>如果无法避免在上述中创建对象，可考虑使用对象池模型，解决频繁创建与销毁等问题。</li>
+</ul>
+<h2 id="2）对象池"><a href="#2）对象池" class="headerlink" title="2）对象池"></a>2）对象池</h2><p>运用对象池，能很好的解决短期内创建大量对象，导致内存抖动的问题。当然如果对对象池使用不当，也会出现很严重的问题。所以利器都是双面的，使用起来需要谨慎的正确的使用。</p>
+<p>对象池内可能存在的对象有Bitmaps、Views、Paints等，那么它工作的原理是什么样呢？我们可以参考官方的图来解释更好：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/22.png" alt=""></p>
+<p>使用对象池时，首先查询你所持有的对象是否在池子内，如果有则重用这个对象，如果没有则需要创建这个对象，然后加入池子中。当然我们可以预分配一些池子中的内容。什么意思呢？比如我们程序在刚启动时，需要一些对象，则我们可以先创建一些对象在池子中，这样我们程序在加载时能更快一点。对于对象池，我们需要进行合理的管理，需要手动的进行分配和释放，避免在对象池内产生内存泄漏。当然我们必须保证所有加入池子中的对象和外界的对象之间，没有互相引用的关系，才能正确的进行对象释放工作。</p>
+<p>对于对象池的研究，我们后续会继续深入下去。</p>
+<h2 id="3）Bitmap优化"><a href="#3）Bitmap优化" class="headerlink" title="3）Bitmap优化"></a>3）Bitmap优化</h2><p>想要了解对于Bitmap应该如何优化，我们必须先了解Android中Heap的工作机制。这里我们引入官方的图来解释更为清晰：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/23.png" alt=""></p>
+<p>Android内的Heap在工作时，是不会自动进行调整的。比如上图，如果Heap中一块区域被移除（GC）后，这块区域不会自动的进行空间调整，或者进行区域重排，那么如果当有一个更大的区域（比如图片）放在Heap前，那么就会放不下，导致GC，并让Heap另腾出一块空间来存放这个图。如果没办法腾出，等待的只能是OOM。</p>
+<p>如果想减少Bitmap的大小，最直观的方法就是，减小图片本身的质量。</p>
+<h3 id="降低图片质量"><a href="#降低图片质量" class="headerlink" title="降低图片质量"></a>降低图片质量</h3><p>对于图片，Android为其准备了有4种图片的解码格式。其占用内存的大小如下官方内容展示：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/24.png" alt=""></p>
+<p>如果一味的ARGB_8888编码图片，那么很快就能撑爆你的内存。那么如果降低质量，随之而来的占用空间也会减少。当然图片的质量是否影响到我们程序的展现效果，由我们自己掌控。如果需要设置图片的编码率，那么我们可以如下写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">options.inPreferredConfig = Bitmap.Config.RGB_565; <span class="comment">//更改格式</span></span><br><span class="line">BitmapFactory.decodeResource(getResources(), R.drawable.ic_android_black_24dp, options);</span><br></pre></td></tr></table></figure>
+<h3 id="对图片的缩放处理"><a href="#对图片的缩放处理" class="headerlink" title="对图片的缩放处理"></a>对图片的缩放处理</h3><p>对于图片的展示，小图永远对于大图来讲，在内存上占用更小的空间。</p>
+<p>Android已经为我们准备了很好的API，比如inSampleSize，能够很好的进行等比缩放显示图片。这里我们举个例子对比下，加载用一个图，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line"><span class="comment">//options.inSampleSize = 4;</span></span><br><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img1, options);</span><br><span class="line">imageView.setImageBitmap(bitmap);</span><br></pre></td></tr></table></figure>
+<p>此时内存占用空间如图：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/25.png" alt=""></p>
+<p>当添加<code>options.inSampleSize = 4</code>代码后，其占用内存情况如下：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/26.png" alt=""></p>
+<p>这个效果简直太明显了。不过inSampleSize不是随便设置的值，这里需要根据自己程序的需要，动态计算出来的值。在官网有更好的例子教程，希望童鞋们多去学习下。我们这里只是举出简单的例子。</p>
+<p>当然，我们还可以使用<code>inCaled</code>，<code>inDensity</code>，<code>inTargetDensity</code>等其他属性，对图片进行解码处理。这里就不再一一演示。</p>
+<p>我们都知道，处理图片时最怕的就是占用过多的内存，占用不必要的内存。那么我们有什么办法在不占用内存的情况下，来获得图片的大小资源信息呢？答案当然是有的。我们还可以使用<code>BitmapFactory.Options</code>里的<code>inJustDecodeBounds</code>来预读图片信息，进行图片资源信息的获取，从而能帮助我们更好的计算出你要缩放多大的值更为合适，也就是<code>inSampleSize</code>为多少更为合适。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">options.outWidth = width;</span><br><span class="line">options.outHeight = height;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">options.inJustDecodeBounds = <span class="keyword">false</span>;</span><br><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img1, options);</span><br></pre></td></tr></table></figure>
+<p>缩放图片，我们可以使用<code>inSampleSize</code>进行等比缩放，那么还有没有其他更简单方法呢？答案还是有，我们可以使用<code>Bitmap.createScaledBitmap</code>方法来创建一个可控大小的缩放图片，而且执行的效率很快。不过这个方法在使用时要注意，使用它之前，原图需要加载到内存中，当然如果图片过大，还是会报出OOM问题。所以应适当缩放图片后在进行运用更为恰当。</p>
+<h3 id="重用Bitmap"><a href="#重用Bitmap" class="headerlink" title="重用Bitmap"></a>重用Bitmap</h3><p>对于Bitmap的利用，最好的办法就是重用。重用能避免内存的过度浪费，避免内存抖动，同时执行效率会更高。</p>
+<p>在讲之前，还是老样子，引用官方的图片能更好的解释其原理：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/27.png" alt=""></p>
+<p>我们可以看到，每个图片都会占用一块单独的内存，那么当图片过多，内存过大，再大的内存也会爆掉。</p>
+<p>Android帮我们提供了一个很好的解决方案，如果在解码时引入<code>inBitmap</code>，那么效果就会像下图样子：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/28.png" alt=""></p>
+<p>什么意思呢？很简单，一旦使用inBitmap，我们便可告知解码器使用已经存在的一块内存区域，新解码的Bitmap会去使用之前已经申请过的Heap所占的区域，而不是重新为新解码的Bitmap去申请一块新内存。这样以来，我们就会展示N多张图，甚至成千上万（当然没必要在手机上展示那么多图片），都不会因为Bitmap内存申请过多而导致出现问题，只需仅仅一小部分的内存区域就够了。</p>
+<p>当然，要想实现很好地重用，是很复杂的逻辑。我们Google大大已经为我们提供了更好地加载Bitmap工具，那就是<a href="https://github.com/bumptech/glide" target="_blank" rel="noopener">Glide</a>。官方有很详尽的使用方法。</p>
+<p>如果必须需要手工实现<code>inBitmap</code>的使用，那么这里我们需要格外注意几点：</p>
+<ul>
+<li>不同版本操作不同：<ul>
+<li>如果SDK Version Code在11 - 18之间，重用的Bitmap必须与原Bitmap大小一致。也就是说，当给inBitmap赋值的图片大小如果是96 x 96的，那么新申请的Bitmap也必须为96 x 96，才能被重用。</li>
+<li>如果SDK Version Code在19以上，那么新申请的Bitmap大小必须等于或小于已经给inBitmap赋值的大小。</li>
+</ul>
+</li>
+<li>解码格式必须一致：<ul>
+<li>新申请的Bitmap必须与已经存在的Bitmap解码格式必须相同。也就是说，如果之前所申请的Bitmap的解码格式是8888，那么新申请的Bitmap的解码格式必须也为8888，不能为565或者4444。</li>
+</ul>
+</li>
+</ul>
+<p>对于上述第二条，引用官方的图片解释能更为清晰：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/29.png" alt=""></p>
+<p>我们可以看到，新申请的Bitmap会去池中找到和自己匹配的模板进行重用，这样不会出现不匹配的情况。</p>
+<h2 id="4）内存泄漏"><a href="#4）内存泄漏" class="headerlink" title="4）内存泄漏"></a>4）内存泄漏</h2><p>内存泄漏是我们经常会遇到的问题。啥叫内存泄漏呢？我们先整个官方的图片来解释原理：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/30.png" alt=""></p>
+<p>可以看到，当未使用的对象区域超过了未引用区域，那么会发生内存泄漏，而泄漏的区域恰恰就是未引用与引用区域交接的地方。那么也就是说，我们需要时刻保持未使用的对象进行回收。</p>
+<p>讲到这里，我们能想到最直观的会最有可能发生的情况是什么样子的呢？</p>
+<h3 id="尽量减少使用Static对象"><a href="#尽量减少使用Static对象" class="headerlink" title="尽量减少使用Static对象"></a>尽量减少使用Static对象</h3><p>我们都知道，Static在一个程序内的生命周期是非常长的，如果我们不小心，很容易就会造成对象泄漏。好在官方为我们绘制了一个图能更清晰的说明这一切：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/31.png" alt=""></p>
+<p>我们看到，Static变量的生命周期，和我们app整个的进程生命周期同样的长，那么如果大量使用Static，你能想象到后果。</p>
+<h3 id="不要把View添加到无清除机制的容器中进行管理"><a href="#不要把View添加到无清除机制的容器中进行管理" class="headerlink" title="不要把View添加到无清除机制的容器中进行管理"></a>不要把View添加到无清除机制的容器中进行管理</h3><p>最可怕的就是没有清楚机制是容器，那就相当于死胡同一条。</p>
+<p>在Java里有一个叫WeakHashMap的容器，如果你主动进行清理操作，很有可能还会保留内容，从而导致leak。</p>
+<h2 id="5）提高应用性能的容器"><a href="#5）提高应用性能的容器" class="headerlink" title="5）提高应用性能的容器"></a>5）提高应用性能的容器</h2><p>虽然现在手机的内存发展是巨大的，但是内存资源对于手持设备来讲仍然需要节省的，不能放纵使用。</p>
+<p>我们举个最简单例子，比如HashMap是Java的API，我们用官方的图解来说明下HashMap的工作机制：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/33.png" alt=""></p>
+<p>我们可以看到，HashMap会为我们的容器分配出我们要用的空间，但是有可能不使用。虽然好用，但是可能会浪费我们宝贵的空间。根据这一特点，Android为我们提供了更节省空间的另一种容器：ArrayMap。先来用官方的图来看下他的结构是什么样：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/34.png" alt=""></p>
+<p>我们可以看到，ArrayMap使用两个数组来工作的，一个是记录Key的Hash顺序列表，而另一个是按照之前Key的顺序记录的Key-Value的值。看上去还挺像回事儿。</p>
+<p>那么如果利用这个容器，我们进行增删查时候，又是怎么工作的呢？</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/35.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/36.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/37.png" alt=""></p>
+<p>相对于增删，查询过程是稍有些复杂。查询过程运用了二分法的查找方式，进行查找。那么很显然，如果我们的数据过多，查询某个元素所花费的时间也就越长。所以我们需要的是时间，还是避免内存消耗，是我们需要权衡的一点。</p>
+<p>所以我们官方建议我们在使用ArrayMap时需要注意几点：</p>
+<ul>
+<li>容器内对象数量尽量在千数级级别以内最为高效；</li>
+<li>数据的格式包含Map的结构。</li>
+</ul>
+<h2 id="6）避免使用Enums"><a href="#6）避免使用Enums" class="headerlink" title="6）避免使用Enums"></a>6）避免使用Enums</h2><p>Enum是我们在编程时会经常用到的方法。不过这个好用的方法有时候不会被我们程序员注意，事实上它所带来的后果我们不得不需要重视的。先来看下官方给我们进行一次测评比较：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/38.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/39.png" alt=""></p>
+<p>我们很清楚发现，在下图使用Enum后，Android的可执行文件Dex的字节有明显的提升。这影响不仅仅如此，在内存上也会有很明显的影响，我们再来看官方的图解：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/40.png" alt=""></p>
+<p>所以在官方文档内，Google大大早就不建议我们在Android内使用Enum了。原文如下：<a href="https://developer.android.com/topic/performance/memory.html" target="_blank" rel="noopener">https://developer.android.com/topic/performance/memory.html</a></p>
+<h2 id="7）减少自动包装"><a href="#7）减少自动包装" class="headerlink" title="7）减少自动包装"></a>7）减少自动包装</h2><p>什么叫自动包装呢？我们都知道Java里有基本数据类型，比如int、long、boolean等。那么有时候需要将这些数据放在容器中，比如放在HashMap中，就会自动包装成Integer、Long、Boolean等。那么这个过程其实也是占用了一些宝贵的内存的。比如我们可以引用官方的图解来说明这个问题：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/41.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/42.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/43.png" alt=""></p>
+<p>好在Android为我们提供了更优秀的容器，来避免自动包装问题，也减少了过多的内存消耗。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/44.png" alt=""></p>
+<p>当然，这些容器在使用时也是有前提的，和我们之前的ArrayMap使用条件一致：</p>
+<ul>
+<li>容器内对象数量尽量在千数级级别以内最为高效；</li>
+<li>数据的格式包含Map的结构。</li>
+</ul>
+<h2 id="8）管理你的内存"><a href="#8）管理你的内存" class="headerlink" title="8）管理你的内存"></a>8）管理你的内存</h2><p>我们都知道，无论Android还是iOS，都有一个类似后台应用的概念。那么这个后台应用到底起到什么作用呢？用过Android手机或者iPhone的童鞋都知道，不用我在这墨迹，从后台恢复一个程序的速度，总是要比你新启动一个程序的速度要快。那么在手机本身层面上，也更为节省资源，更节省电量。但是过多的后台还是会吃满我们的内存。所以作为开发者，我们必须了解在Android程序内，如何管理我们程序本身的内存，如何管理我们的后台界面。</p>
+<p>好在Android已经为我们提供了一些回调的方法，来通知我们应用内存的使用情况。如果后台应用被系统Kill掉的话，前台应用的<code>onLowMemory()</code>方法就会收到通知，告知这个低内存的情况，是否决定我们要进行释放资源等操作，避免出现问题。当然Android还给我们提供了另外一个回调方法<code>onTrimMemory()</code>，可以在<code>Application</code>、<code>Activity</code>、<code>Service</code>、<code>Content Provider</code>，他可以能识别到系统内存到达某些状态的时候，所反馈回来的信息，决定我们是否进行一些操作。这些信息可以参考官方给我们提供的一个图表：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/45.png" alt=""></p>
+<p>后面我会继续从缓存、序列化、异步、代码及包大小等方面继续介绍，有关Android应用性能的优化方案。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.doncc.org/2017/02/13/Android性能优化（一）/" data-id="cjbnf47jj00036s1t6gdsozbs" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/14/Android性能优化（二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android性能优化（二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/19/2016 Google I:O 大会小斟/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2016 Google I/O 大会小斟</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/小杂/">小杂</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/手工/">手工</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/">Google新技术：Instant App全拆解（4）——架构（完结）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/">Google新技术：Instant App全拆解（3）——着手</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/">Google新技术：Instant App全拆解（2）——剖析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/Google新技术：Instant App全拆解（1）——初探/">Google新技术：Instant App全拆解（1）——初探</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/09/闪电/">闪电</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Darkbug<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

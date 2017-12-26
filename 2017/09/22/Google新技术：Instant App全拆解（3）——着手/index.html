@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Google新技术：Instant App全拆解（3）——着手 | Darkbug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="作者：Darkbug  原文标题：Google新技术：Instant App全拆解（3）——着手  原文链接：https://segmentfault.com/a/1190000011315286  首发地址：http://www.doncc.org  转发请注明转载地址，请尊重原创作者权益！   《Google新技术：Instant App全拆解》系列回顾： 第一篇：Google新技术：Ins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google新技术：Instant App全拆解（3）——着手">
+<meta property="og:url" content="http://www.doncc.org/2017/09/22/Google新技术：Instant App全拆解（3）——着手/index.html">
+<meta property="og:site_name" content="Darkbug">
+<meta property="og:description" content="作者：Darkbug  原文标题：Google新技术：Instant App全拆解（3）——着手  原文链接：https://segmentfault.com/a/1190000011315286  首发地址：http://www.doncc.org  转发请注明转载地址，请尊重原创作者权益！   《Google新技术：Instant App全拆解》系列回顾： 第一篇：Google新技术：Ins">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://images.doncc.org/img/InstantApp/AndroidSDKManager.jpg">
+<meta property="og:image" content="http://images.doncc.org/img/InstantApp/SamsungScreen.jpg">
+<meta property="og:image" content="http://images.doncc.org/img/InstantApp/Nexus5xScreen.jpg">
+<meta property="og:image" content="http://images.doncc.org/img/InstantApp/OpenInstantApp.jpg">
+<meta property="og:updated_time" content="2017-12-26T07:21:33.742Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Google新技术：Instant App全拆解（3）——着手">
+<meta name="twitter:description" content="作者：Darkbug  原文标题：Google新技术：Instant App全拆解（3）——着手  原文链接：https://segmentfault.com/a/1190000011315286  首发地址：http://www.doncc.org  转发请注明转载地址，请尊重原创作者权益！   《Google新技术：Instant App全拆解》系列回顾： 第一篇：Google新技术：Ins">
+<meta name="twitter:image" content="http://images.doncc.org/img/InstantApp/AndroidSDKManager.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Darkbug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Darkbug</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">永远不要去怨恨那些可被充分解释为愚蠢的事情。--汉隆的剃刀</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.doncc.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Google新技术：Instant App全拆解（3）——着手" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/" class="article-date">
+  <time datetime="2017-09-22T09:26:30.000Z" itemprop="datePublished">2017-09-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Google新技术：Instant App全拆解（3）——着手
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>作者：Darkbug<br>  原文标题：Google新技术：Instant App全拆解（3）——着手<br>  原文链接：<a href="https://segmentfault.com/a/1190000011315286" target="_blank" rel="noopener">https://segmentfault.com/a/1190000011315286</a><br>  首发地址：<a href="http://www.doncc.org">http://www.doncc.org</a><br>  转发请注明转载地址，请尊重原创作者权益！</p>
+</blockquote>
+<hr>
+<p>《Google新技术：Instant App全拆解》系列回顾：</p>
+<p>第一篇：<a href="https://segmentfault.com/a/1190000010906162" target="_blank" rel="noopener">Google新技术：Instant App全拆解（1）——初探</a></p>
+<p>第二篇：<a href="https://segmentfault.com/a/1190000011169174" target="_blank" rel="noopener">Google新技术：Instant App全拆解（2）——剖析</a></p>
+<hr>
+<p>本文着重介绍在进行Instant App程序开发时，所需要进行的准备工作，包括集成开发环境的准备，以及准备工作的注意事项。准备工作不是非常繁琐，所以内容照前一篇文章相比相对较少。</p>
+<p>如有描述不正确的地方，请及时联系我，我将吸取意见并改正。</p>
+<a id="more"></a>
+<h1 id="1-集成开发环境的准备工作"><a href="#1-集成开发环境的准备工作" class="headerlink" title="1.集成开发环境的准备工作"></a>1.集成开发环境的准备工作</h1><p>想要进行Instant App的开发，就需要对其开发环境进行准备。在Android官方SDK提供的内容来看，官方已经为我们提供了完整的SDK。我们只需下载使用即可。</p>
+<p>在集成开发环境的准备工作一章内，我将分为两个部分进行阐述：</p>
+<ul>
+<li>Instant App SDK的导入</li>
+<li>系统环境要求</li>
+</ul>
+<h2 id="1-1-Instant-App-SDK的导入"><a href="#1-1-Instant-App-SDK的导入" class="headerlink" title="1.1 Instant App SDK的导入"></a>1.1 Instant App SDK的导入</h2><p>对于导入Instant App的SDK，是比较简单的。在我们最为熟悉的Android SDK Manager内，有为我们提供的下载地址。</p>
+<p>操作步骤如下：</p>
+<ol>
+<li>启动Android SDK Manager</li>
+<li>选择“SDK Tools”标签</li>
+<li>勾选中“Instant Apps Development SDK”选项，确定导入</li>
+<li>当导入完毕后，点击“OK”关闭Android SDK Manager</li>
+</ol>
+<p>操作预览图如下：</p>
+<p><img src="http://images.doncc.org/img/InstantApp/AndroidSDKManager.jpg" alt=""></p>
+<p>当我们成功导入SDK后，我们就可以利用它进行Instant App程序开发了。当然，这一步的完成，仅仅是可以动手开发的第一步。</p>
+<h2 id="1-2-系统环境要求"><a href="#1-2-系统环境要求" class="headerlink" title="1.2 系统环境要求"></a>1.2 系统环境要求</h2><p>Instant App开发不是在所有的集成开发环境都可以进行的。在Windows、MacOS、Linux下均进行程序开发。</p>
+<p>下面我会列举出系统所要求的环境：</p>
+<ol>
+<li>电脑的JDK 1.8以上</li>
+<li>Android Studio version 3.0或以上（包含预览版）</li>
+<li>配置好<code>ANDROID_HOME</code>环境变量</li>
+<li>Android SDK 6.0+</li>
+<li>Android SDK Tools 25.0+</li>
+<li>Android SDK Build Tools 26.0+</li>
+<li>Android SDK Platform Tools 25.0+</li>
+<li>Android Support Library 最新版本</li>
+<li>Android Repository 最新版本</li>
+</ol>
+<p>这里要格外说明下，想要进行Instant App开发，必须在Android Studio 3.0及以上的版本上进行开发（包括预览版）。目前官方已到最新的预览版为Android Studio Beta 5，官方已经提供预览版的下载地址：<a href="https://developer.android.com/studio/preview/index.html?hl=zh-cn" target="_blank" rel="noopener">https://developer.android.com/studio/preview/index.html?hl=zh-cn</a></p>
+<p>如已发布正式版，请忽略上面链接，下载正式版即可。</p>
+<h1 id="2-模拟器-amp-真机的准备工作"><a href="#2-模拟器-amp-真机的准备工作" class="headerlink" title="2.模拟器&amp;真机的准备工作"></a>2.模拟器&amp;真机的准备工作</h1><p>同样，Instant App的开发，是有模拟器与真机的环境要求的。下面我来列举出对于真机及模拟器的系统环境要求：</p>
+<h2 id="2-1模拟器的准备工作"><a href="#2-1模拟器的准备工作" class="headerlink" title="2.1模拟器的准备工作"></a>2.1模拟器的准备工作</h2><ul>
+<li>Android 6.0（API Level 23）及以上版本系统</li>
+<li>Nexus 5X镜像模拟器</li>
+<li>带有Google APIs框架结构的镜像</li>
+<li>CPU为x86架构</li>
+</ul>
+<p>创建模拟器的方法这里我就不再赘述了，相信大伙既然能看到本套教程，也会能知道该如何创建Android模拟器。这里注意，CPU的架构方式不能为x86_64的方式，绝对不能！</p>
+<h2 id="2-2真机的准备工作"><a href="#2-2真机的准备工作" class="headerlink" title="2.2真机的准备工作"></a>2.2真机的准备工作</h2><ul>
+<li>运行于Android 6.0+（API Level 23及以上）的系统</li>
+<li>手机厂商：<ul>
+<li>Google亲儿子：Nexus 5X、Nexus 6P、Pixel、Pixel XL</li>
+<li>三星：Galaxy S7(S7 edge)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Google 服务框架已安装在手机上。</p>
+<p>Google的亲儿子系列是天生自带Google服务框架的，至于三星S7(edge)，需要xx上网的方式(你懂得)，另安装服务框架。</p>
+<p>当你的真机真正具备上述条件后，接下来的操作尤为重要：</p>
+</li>
+</ul>
+<h2 id="2-3开启Google服务"><a href="#2-3开启Google服务" class="headerlink" title="2.3开启Google服务"></a>2.3开启Google服务</h2><p>当你的手机已有Google服务框架后，就可以启动Google账号。当开启Google账号服务后，就可以进行下面的步骤了。具体添加Google账号的方法，请参考如下；如已开启Google账号，请跳过本2.3章节，直接跳到2.4章节阅读。</p>
+<h3 id="2-3-1-Samsung-Galaxy-S7-edge-系列"><a href="#2-3-1-Samsung-Galaxy-S7-edge-系列" class="headerlink" title="2.3.1 Samsung Galaxy S7(edge)系列"></a>2.3.1 Samsung Galaxy S7(edge)系列</h3><p>这里手机系统以Android 7.0为例：</p>
+<ol>
+<li>打开手机设置。</li>
+<li>选择云和账户。</li>
+<li>选择账户。</li>
+<li>选择添加账户。</li>
+<li>添加一个Google账户。当然你得需要xx上网，你懂得。</li>
+</ol>
+<p>方法截图如下：</p>
+<p><img src="http://images.doncc.org/img/InstantApp/SamsungScreen.jpg" alt=""></p>
+<p>然后你就能在设置界面里，看到Google的选项设置了。</p>
+<h3 id="2-3-2-Nexus系列"><a href="#2-3-2-Nexus系列" class="headerlink" title="2.3.2 Nexus系列"></a>2.3.2 Nexus系列</h3><p>这里手机以Nexus 5X，预装Android 7.1.1系统为例：</p>
+<ol>
+<li>打开手机设置。</li>
+<li>选择账号。</li>
+<li>选择添加账号。</li>
+<li>选择Google。当然这里同样需要xx上网。。。-_-||</li>
+</ol>
+<p>所以你看吧，木有xx上网的童鞋，蓝瘦不蓝瘦，香菇不香菇。😂</p>
+<p><img src="http://images.doncc.org/img/InstantApp/Nexus5xScreen.jpg" alt=""></p>
+<p>然后你就能在设置界面里，看到Google的选项设置了。</p>
+<h2 id="2-4开启免安装应用功能"><a href="#2-4开启免安装应用功能" class="headerlink" title="2.4开启免安装应用功能"></a>2.4开启免安装应用功能</h2><p>对于默认的Google账户，是没有开启免安装应用功能的开关的。因为Instant App是新技术，Google并没有强制让用户体验到这个功能，而是自由征集用户的选择。所以如果想要进行Instant App程序开发，这一项的功能开关是必不可少的需要打开。</p>
+<p>操作步骤如下：</p>
+<ol>
+<li>打开手机设置</li>
+<li>选择Google账户</li>
+<li>滑动到下面，选择免安装应用</li>
+<li>将关闭状态的开关，置为开启</li>
+<li>在开启的时候，会弹出一个询问对话框，确定启用免安装应用服务，就可以成功打开免安装应用功能了。</li>
+</ol>
+<p><img src="http://images.doncc.org/img/InstantApp/OpenInstantApp.jpg" alt=""></p>
+<p>这里需要同学们注意几点问题：</p>
+<ul>
+<li>Google Play Services框架需要在10.0.84+的版本，才能正常使用Instant App程序。</li>
+<li>需安装Google Play for Services for Instant Apps即时应用程序服务框架。</li>
+</ul>
+<p>这样我们就可以进行Instant App程序开发了。怎么样，是不是感觉有点小激动？写到这里，我们确实发现，在进行Instant App程序开发前的准备工作，其实很简单。</p>
+<p>接下来的文章，我会从程序架构方面来讲解Instant App程序开发。</p>
+<hr>
+<p>《Google新技术：Instant App全拆解》系列预告：</p>
+<p>第四篇：<a href="https://segmentfault.com/a/1190000011648067" target="_blank" rel="noopener">Google新技术：Instant App全拆解（4）——架构</a></p>
+<hr>
+<p>《Google新技术：Instant App全拆解》系列回顾：</p>
+<p>第一篇：<a href="https://segmentfault.com/a/1190000010906162" target="_blank" rel="noopener">Google新技术：Instant App全拆解（1）——初探</a></p>
+<p>第二篇：<a href="https://segmentfault.com/a/1190000011169174" target="_blank" rel="noopener">Google新技术：Instant App全拆解（2）——剖析</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.doncc.org/2017/09/22/Google新技术：Instant App全拆解（3）——着手/" data-id="cjbnf47k200086s1td3bqo4fq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Google新技术：Instant App全拆解（4）——架构（完结）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Google新技术：Instant App全拆解（2）——剖析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/小杂/">小杂</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/手工/">手工</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/">Google新技术：Instant App全拆解（4）——架构（完结）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/">Google新技术：Instant App全拆解（3）——着手</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/">Google新技术：Instant App全拆解（2）——剖析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/Google新技术：Instant App全拆解（1）——初探/">Google新技术：Instant App全拆解（1）——初探</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/09/闪电/">闪电</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Darkbug<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

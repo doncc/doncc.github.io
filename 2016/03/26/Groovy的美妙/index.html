@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Groovy的美妙 | Darkbug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是Groovy？Groovy是一种基于JVM的语言。如果说Java是基础，那么Groovy可以说是Java 2.0。 但是这里不是完全的取代，而是可以和Java共存，使程序更加的完美。它能够简化很多Java代码，甚至有的时候要比Java的效率还要快。Groovy在书写上更像Java，虽然它的语法源于Smalltalk、Ruby这类语言，但是我们完全可以把它想像成Java的变体语言。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Groovy的美妙">
+<meta property="og:url" content="http://www.doncc.org/2016/03/26/Groovy的美妙/index.html">
+<meta property="og:site_name" content="Darkbug">
+<meta property="og:description" content="什么是Groovy？Groovy是一种基于JVM的语言。如果说Java是基础，那么Groovy可以说是Java 2.0。 但是这里不是完全的取代，而是可以和Java共存，使程序更加的完美。它能够简化很多Java代码，甚至有的时候要比Java的效率还要快。Groovy在书写上更像Java，虽然它的语法源于Smalltalk、Ruby这类语言，但是我们完全可以把它想像成Java的变体语言。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-26T08:39:08.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Groovy的美妙">
+<meta name="twitter:description" content="什么是Groovy？Groovy是一种基于JVM的语言。如果说Java是基础，那么Groovy可以说是Java 2.0。 但是这里不是完全的取代，而是可以和Java共存，使程序更加的完美。它能够简化很多Java代码，甚至有的时候要比Java的效率还要快。Groovy在书写上更像Java，虽然它的语法源于Smalltalk、Ruby这类语言，但是我们完全可以把它想像成Java的变体语言。">
+  
+    <link rel="alternate" href="/atom.xml" title="Darkbug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Darkbug</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">永远不要去怨恨那些可被充分解释为愚蠢的事情。--汉隆的剃刀</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.doncc.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Groovy的美妙" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/26/Groovy的美妙/" class="article-date">
+  <time datetime="2016-03-26T02:19:35.000Z" itemprop="datePublished">2016-03-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Groovy的美妙
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是Groovy？"><a href="#什么是Groovy？" class="headerlink" title="什么是Groovy？"></a>什么是Groovy？</h2><p>Groovy是一种基于JVM的语言。如果说Java是基础，那么Groovy可以说是Java 2.0。</p>
+<p>但是这里不是完全的取代，而是可以和Java共存，使程序更加的完美。它能够简化很多Java代码，甚至有的时候要比Java的效率还要快。Groovy在书写上更像Java，虽然它的语法源于Smalltalk、Ruby这类语言，但是我们完全可以把它想像成Java的变体语言。</p>
+<a id="more"></a>
+<p>Groovy的特点：</p>
+<ul>
+<li>Groovy指定的内容，都是public，除非自己另行指定。</li>
+<li>Groovy在Java对象上增加了一些快捷方式及方法，更利于使用</li>
+<li>Groovy省略了变量的类型声明。比如String str=””; 在Groovy里，就可以不用写</li>
+<li>Groovy与Java对比，是动态的，Java在定义对象类型是固定的，属于固定型语言。String str=”xxx”</li>
+<li>Groovy不必像Java那样先编译再运行，因为它属于脚本语言。脚本语言的特点就是在运行时进行解析。</li>
+</ul>
+<p>还有个非常流弊的概念，在Groovy里，一切皆对象！（你也是对象，我也是。。。）</p>
+<p>举例：</p>
+<p>用Java书写Hello world：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;	</span><br><span class="line">	System.out.println(<span class="string">"Hello World!"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用Groovy书写Hello world，定义一个文件.groovy，</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println <span class="string">"Hello World!"</span></span><br></pre></td></tr></table></figure>
+<p>然后命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groovy MyFirstExample.groovy</span><br></pre></td></tr></table></figure>
+<p>这里我们运用Groovy，也可以像Java一样，编译文件成字节码形式，运用groovyc命令，同样编译<code>.java</code>文件成<code>.class</code>文件。</p>
+<p>——— 我们来举个例子，来说明下，Groovy就是Java，</p>
+<p>这里我们可以用InteliJ IDEA来去做</p>
+<h3 id="类型的定义"><a href="#类型的定义" class="headerlink" title="类型的定义"></a>类型的定义</h3><p>在java中，一个对象得指明是什么类型，比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String name = <span class="string">"张三"</span>;</span><br></pre></td></tr></table></figure>
+<p>在Groovy中，我们可以这样</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> name = <span class="string">"张三"</span></span><br></pre></td></tr></table></figure>
+<p>无类型对象的好处，可以自动去识别对象的类型，减去很多的工作。并且，Groovy 缺少类型能够带来更高的灵活性 — 不需要接口或抽象类</p>
+<h3 id="流程控制语句"><a href="#流程控制语句" class="headerlink" title="流程控制语句"></a>流程控制语句</h3><p>在java中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br></pre></td></tr></table></figure>
+<p>在Groovy中</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> repeat(val)&#123;</span><br><span class="line"> <span class="keyword">for</span>(i <span class="keyword">in</span> <span class="number">0.</span><span class="number">.5</span>)&#123;</span><br><span class="line">  println val</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><p>可以用如下表达一个数组</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> arr = <span class="number">0.</span><span class="number">.10</span></span><br><span class="line">println(arr.<span class="keyword">class</span>)</span><br><span class="line">println(arr)</span><br><span class="line"><span class="keyword">assert</span> arr <span class="keyword">instanceof</span> List</span><br></pre></td></tr></table></figure>
+<p>groovy不仅仅就这么简单，其实在背后，一切都是标准的Java对象。每个Groovy集合，都是<code>java.util.Collection</code>或者<code>java.util.Map</code>的实例</p>
+<p>进行元素的添加：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">coll.add(<span class="string">"Python"</span>)</span><br><span class="line">coll &lt;&lt; <span class="string">"Smalltalk"</span></span><br><span class="line">coll[<span class="number">5</span>] = <span class="string">"Perl"</span></span><br><span class="line">coll + <span class="string">"CC"</span></span><br></pre></td></tr></table></figure>
+<h4 id="操作数据"><a href="#操作数据" class="headerlink" title="操作数据"></a>操作数据</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line"><span class="keyword">assert</span> numbers + <span class="number">5</span> == [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="keyword">assert</span> numbers - [<span class="number">2</span>,<span class="number">3</span>] == [<span class="number">1</span>,<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>分布操作符：</p>
+<p>join：替换分隔符</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> number = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">number = number.join(<span class="string">"."</span>)</span><br><span class="line">println(number)</span><br></pre></td></tr></table></figure>
+<p>count：获取下标</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">3</span>].count(<span class="number">3</span>) == <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>toUpperCase：全部转换为大写：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> arr = [<span class="string">"java"</span>, <span class="string">"groovy"</span>, <span class="string">"c"</span>]*.toUpperCase();</span><br><span class="line">println(arr)</span><br></pre></td></tr></table></figure>
+<h3 id="Groovy映射"><a href="#Groovy映射" class="headerlink" title="Groovy映射"></a>Groovy映射</h3><p>在Java里，映射是这样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String&gt;map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">map.put(<span class="string">"name"</span>, <span class="string">"Andy"</span>);</span><br><span class="line">map.put(<span class="string">"VPN-#"</span>,<span class="string">"45"</span>);</span><br></pre></td></tr></table></figure>
+<p>在Groovy里，是这样</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> hash = [<span class="string">name:</span> <span class="string">"andy"</span>, <span class="string">"VPN-#"</span>: <span class="number">34</span>]</span><br><span class="line">println(hash)</span><br><span class="line">println(hash.getClass())</span><br></pre></td></tr></table></figure>
+<h3 id="Groovy闭包"><a href="#Groovy闭包" class="headerlink" title="Groovy闭包"></a>Groovy闭包</h3><p>我们都知道Groovy就是Java，所以在迭代上，我们可以这样做</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> acoll = [<span class="string">"Groovy"</span>, <span class="string">"Java"</span>, <span class="string">"Ruby"</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (Iterator iterator = acoll.iterator(); iterator.hasNext();)&#123;</span><br><span class="line">    println <span class="string">"123"</span></span><br><span class="line">    println iterator.next()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际在for循环中不需要类型声明，不必获取Iterator实例并直接操纵它，可以直接在集合上进行迭代。</p>
+<p>其实上面，可以改造成这样</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> acoll = [<span class="string">"Groovy"</span>, <span class="string">"Java"</span>, <span class="string">"Ruby"</span>]</span><br><span class="line">		</span><br><span class="line">acoll.each&#123;</span><br><span class="line"> println it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样each直接在acoll内进行调用。因为acoll实例实际是ArrayList，所以each是一种新语法，可以遍历出内容。这里，<code>由{ }包围起来的代码块就是闭包</code></p>
+<p>闭包中的 <code>it</code> 变量是一个关键字，指向被调用的外部集合的每个值 — 它是默认值，可以用传递给闭包的参数覆盖它。下面的代码执行同样的操作，但使用自己的项变量：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> acoll = [<span class="string">"Groovy"</span>, <span class="string">"Java"</span>, <span class="string">"Ruby"</span>]</span><br><span class="line">		</span><br><span class="line">acoll.each&#123; value -&gt;</span><br><span class="line"> println value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个示例中，用 <code>value</code> 代替了 Groovy 的默认 <code>it</code>。</p>
+<h3 id="再说迭代"><a href="#再说迭代" class="headerlink" title="再说迭代"></a>再说迭代</h3><p>我们再说刚刚的map</p>
+<p>用Java语言，进行迭代</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String&gt;map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">map.put(<span class="string">"name"</span>, <span class="string">"Andy"</span>);</span><br><span class="line">map.put(<span class="string">"VPN-#"</span>,<span class="string">"45"</span>);</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line"><span class="keyword">for</span>(Iterator iter = map.entrySet().iterator(); iter.hasNext();)&#123;</span><br><span class="line"> Map.Entry entry = (Map.Entry)iter.next();</span><br><span class="line"> System.out.println(entry.getKey() + <span class="string">" : "</span> + entry.getValue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是我们用Groovy进行迭代：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> map = [<span class="string">"name"</span>: <span class="string">"张三"</span>, <span class="string">age:</span> <span class="number">12</span>]</span><br><span class="line">map.each &#123; key, value -&gt;</span><br><span class="line">    println key + <span class="string">" "</span> + value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>既然是闭包，我们可以在使用时灵活多变。比如带参函数</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">def</span> excite = &#123; world -&gt;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"$&#123;world&#125;!!"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用时就可以</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println excite(<span class="string">"CC"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Groovy-中的“类”"><a href="#Groovy-中的“类”" class="headerlink" title="Groovy 中的“类”"></a>Groovy 中的“类”</h3><p>定义一个People类</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> people = <span class="keyword">new</span> People(<span class="string">name:</span> <span class="string">'张三'</span>, <span class="string">age:</span> <span class="number">12</span>)</span><br><span class="line">println people.name</span><br></pre></td></tr></table></figure>
+<p>而且还生成了标准的setter和getter方法</p>
+<p>如果直接输出people，我们可以看到输出的对象People，甚至我们还可以复写toString方法</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">println people</span><br><span class="line">···</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">String toString() &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"$&#123;name&#125;, $&#123;age&#125;"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果这个时候，在return下再输出一行数据，该是什么结果呢？</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">String toString() &#123;</span><br><span class="line">    <span class="string">"$&#123;name&#125;, $&#123;age&#125;"</span></span><br><span class="line">    <span class="string">"123"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>return没了，这是因为我们Groovy不需要return语句，并且Groovy默认返回方法的最后一行。</p>
+<h3 id="null的判断"><a href="#null的判断" class="headerlink" title="null的判断"></a>null的判断</h3><p>比如这里我定义People类</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span> &#123;</span></span><br><span class="line">    <span class="keyword">def</span> name</span><br><span class="line">    <span class="keyword">def</span> age</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> getName() &#123;</span><br><span class="line">        name.toUpperCase()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    String toString() &#123;</span><br><span class="line">        <span class="string">"$&#123;name&#125;, $&#123;age&#125;, $&#123;getName()&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义主类：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> main(args) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> people = <span class="keyword">new</span> People(<span class="string">age:</span> <span class="number">12</span>)</span><br><span class="line">        println people</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样直接运行会导致null。那么为了避免这个问题，我们可以在People类里，这么写</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span> &#123;</span></span><br><span class="line">    <span class="keyword">def</span> name</span><br><span class="line">    <span class="keyword">def</span> age</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> getName() &#123;</span><br><span class="line">        name?.toUpperCase()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    String toString() &#123;</span><br><span class="line">        "$&#123;name&#125;, $&#123;age&#125;, $&#123;getName()&#125;"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就不会null了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Groovy 是没有类型、没有修改符、没有 return、没有 <code>Iterator</code>、不需要导入集合的 Java。简而言之，Groovy 就是丢掉了许多包袱的 Java，这些包袱可能会压垮 Java 项目。</p>
+<p>Groovy 就是 Java。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.doncc.org/2016/03/26/Groovy的美妙/" data-id="cjbnf47ka000d6s1tu95kkzz5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/12/用Gradle构建项目/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          用Gradle构建项目
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/03/Android各框架的网络请求速度的对比/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android各框架的网络请求速度的对比</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/小杂/">小杂</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/手工/">手工</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/">Google新技术：Instant App全拆解（4）——架构（完结）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/">Google新技术：Instant App全拆解（3）——着手</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/">Google新技术：Instant App全拆解（2）——剖析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/Google新技术：Instant App全拆解（1）——初探/">Google新技术：Instant App全拆解（1）——初探</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/09/闪电/">闪电</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Darkbug<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

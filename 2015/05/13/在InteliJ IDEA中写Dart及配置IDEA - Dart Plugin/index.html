@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin | Darkbug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Dart官方建议使用的编译器是DartEditor，我下载下来看下，和Eclipse的界面很相像。对于Eclipse，我是既爱又恨，爱它的稳定，恨它的功能没有InteliJ IDEA那么出色。于是我心生想法，想看看能不能在IDEA中同样开发Dart。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin">
+<meta property="og:url" content="http://www.doncc.org/2015/05/13/在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin/index.html">
+<meta property="og:site_name" content="Darkbug">
+<meta property="og:description" content="Dart官方建议使用的编译器是DartEditor，我下载下来看下，和Eclipse的界面很相像。对于Eclipse，我是既爱又恨，爱它的稳定，恨它的功能没有InteliJ IDEA那么出色。于是我心生想法，想看看能不能在IDEA中同样开发Dart。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Plugin-Dart.png">
+<meta property="og:image" content="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Plugin-Dart-install.png">
+<meta property="og:image" content="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Plugin-Dart-setting.png">
+<meta property="og:image" content="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Debug-html.png">
+<meta property="og:updated_time" content="2017-12-26T06:44:20.825Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin">
+<meta name="twitter:description" content="Dart官方建议使用的编译器是DartEditor，我下载下来看下，和Eclipse的界面很相像。对于Eclipse，我是既爱又恨，爱它的稳定，恨它的功能没有InteliJ IDEA那么出色。于是我心生想法，想看看能不能在IDEA中同样开发Dart。">
+<meta name="twitter:image" content="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Plugin-Dart.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Darkbug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Darkbug</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">永远不要去怨恨那些可被充分解释为愚蠢的事情。--汉隆的剃刀</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.doncc.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/13/在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin/" class="article-date">
+  <time datetime="2015-05-13T09:25:17.000Z" itemprop="datePublished">2015-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Dart官方建议使用的编译器是DartEditor，我下载下来看下，和Eclipse的界面很相像。对于Eclipse，我是既爱又恨，爱它的稳定，恨它的功能没有InteliJ IDEA那么出色。于是我心生想法，想看看能不能在IDEA中同样开发Dart。</p>
+<a id="more"></a>
+<p>于是试着从IDEA的官网搜索下有没有Dart的插件，一搜还真有。我兴奋了一小下，于是毫不犹豫的down了下来，准备在IDEA中配置一番。</p>
+<p><img src="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Plugin-Dart.png" alt="image1"></p>
+<p>然后install这个plugin:</p>
+<p><img src="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Plugin-Dart-install.png" alt="image2"></p>
+<p>然后再配置下Dart的SDK位置和要运行在的浏览器。这里最好建议Chromium浏览器，Google提供的测试浏览器。</p>
+<p><img src="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Plugin-Dart-setting.png" alt="image3"></p>
+<p>注意，这里一定要勾选上你的项目，我这里的项目是down的官方提供的demo项目。最后在你要运行的html文件上<strong>右键</strong>，debug运行下就行了。</p>
+<p><img src="http://images.doncc.org/img/在InteliJ IDEA中写Dart及配置IDEA/IDEA-Debug-html.png" alt="image4"></p>
+<p>我们不难看出，不仅DartEditor在调试时很便利，同样在IDEA中也是很便利的，而且我们都知道，IDEA要比Eclipse功能强很多，写起html代码简直是爽极了，同样IDEA在配置好Dart SDK后，代码提示功能也是相当的不错。</p>
+<p>就先写到这吧，以后有想起来的再继续补充。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.doncc.org/2015/05/13/在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin/" data-id="cjbnf47kp000m6s1tb6g3x2pq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/03/Android各框架的网络请求速度的对比/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android各框架的网络请求速度的对比
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/12/用Dart开发Android应用（sky应用）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用Dart开发Android应用（sky应用）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/小杂/">小杂</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/手工/">手工</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/">Google新技术：Instant App全拆解（4）——架构（完结）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/">Google新技术：Instant App全拆解（3）——着手</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/">Google新技术：Instant App全拆解（2）——剖析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/Google新技术：Instant App全拆解（1）——初探/">Google新技术：Instant App全拆解（1）——初探</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/09/闪电/">闪电</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Darkbug<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

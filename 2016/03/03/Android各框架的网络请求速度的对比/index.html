@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Android各框架的网络请求速度的对比 | Darkbug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近对Android下各个开源框架比较感兴趣，特扒出来看一看，请不要过度的解读，作为您午后茶沾沾嘴还凑合�，内容肯定有很多的漏洞，希望各路大侠拍砖。 本文只是简单探索下各个框架在get请求数据的情况下，所耗时间的差异。这不能完全的代表框架的整体网络请求性能，只是粗略的看出差异。所表现的差异，大多数在用其不同的方式，比如Android—async-http运用的是HttpClient，而Volley">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android各框架的网络请求速度的对比">
+<meta property="og:url" content="http://www.doncc.org/2016/03/03/Android各框架的网络请求速度的对比/index.html">
+<meta property="og:site_name" content="Darkbug">
+<meta property="og:description" content="最近对Android下各个开源框架比较感兴趣，特扒出来看一看，请不要过度的解读，作为您午后茶沾沾嘴还凑合�，内容肯定有很多的漏洞，希望各路大侠拍砖。 本文只是简单探索下各个框架在get请求数据的情况下，所耗时间的差异。这不能完全的代表框架的整体网络请求性能，只是粗略的看出差异。所表现的差异，大多数在用其不同的方式，比如Android—async-http运用的是HttpClient，而Volley">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://images.doncc.org/img/Android网络请求框架调查/Android框架请求网络耗时图.png">
+<meta property="og:updated_time" content="2017-12-26T08:28:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android各框架的网络请求速度的对比">
+<meta name="twitter:description" content="最近对Android下各个开源框架比较感兴趣，特扒出来看一看，请不要过度的解读，作为您午后茶沾沾嘴还凑合�，内容肯定有很多的漏洞，希望各路大侠拍砖。 本文只是简单探索下各个框架在get请求数据的情况下，所耗时间的差异。这不能完全的代表框架的整体网络请求性能，只是粗略的看出差异。所表现的差异，大多数在用其不同的方式，比如Android—async-http运用的是HttpClient，而Volley">
+<meta name="twitter:image" content="http://images.doncc.org/img/Android网络请求框架调查/Android框架请求网络耗时图.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Darkbug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Darkbug</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">永远不要去怨恨那些可被充分解释为愚蠢的事情。--汉隆的剃刀</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.doncc.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android各框架的网络请求速度的对比" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/03/Android各框架的网络请求速度的对比/" class="article-date">
+  <time datetime="2016-03-03T04:34:02.000Z" itemprop="datePublished">2016-03-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android各框架的网络请求速度的对比
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近对Android下各个开源框架比较感兴趣，特扒出来看一看，请不要过度的解读，作为您午后茶沾沾嘴还凑合�，内容肯定有很多的漏洞，希望各路大侠拍砖。</p>
+<p>本文只是简单探索下各个框架在get请求数据的情况下，所耗时间的差异。这不能完全的代表框架的整体网络请求性能，只是粗略的看出差异。所表现的差异，大多数在用其不同的方式，比如Android—async-http运用的是HttpClient，而Volley运用的是HttpUrlConnection，以及内部实现时候，对其优化的多少。内部的东西我没有深究，只是从表面的形式，看到其效率。故童鞋们可以酌情选择。</p>
+<p>注意，我要开始装逼了，后退！！�</p>
+<a id="more"></a>
+<h2 id="各个框架的简单介绍："><a href="#各个框架的简单介绍：" class="headerlink" title="各个框架的简单介绍："></a>各个框架的简单介绍：</h2><h3 id="Android-async-http"><a href="#Android-async-http" class="headerlink" title="Android-async-http"></a>Android-async-http</h3><p>开源地址：<a href="https://github.com/loopj/android-async-http" target="_blank" rel="noopener">https://github.com/loopj/android-async-http</a></p>
+<p>这个框架在用起来非常的爽，基本就是两部就可以搞定请求动作。比如下面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AsyncHttpClient client = new AsyncHttpClient();</span><br><span class="line">client.get(...);</span><br></pre></td></tr></table></figure>
+<p>这样还不够简洁？</p>
+<p>毕竟是基于HttpClient，那么在操作时可以有多么灵活就可想而知了。具体的其他功能，可以移步到官方地址。</p>
+<h3 id="Volley"><a href="#Volley" class="headerlink" title="Volley"></a>Volley</h3><p>开源地址：<a href="https://android.googlesource.com/platform/frameworks/volley/" target="_blank" rel="noopener">https://android.googlesource.com/platform/frameworks/volley/</a></p>
+<p>Android描述Volley的官方地址：<a href="http://developer.android.com/intl/zh-cn/training/volley/index.html" target="_blank" rel="noopener">http://developer.android.com/intl/zh-cn/training/volley/index.html</a></p>
+<p>Volley官方所说的优点：</p>
+<ul>
+<li>请求队列和请求优先级</li>
+<li>请求Cache和内存管理</li>
+<li>扩展性性强</li>
+<li>可以取消请求</li>
+</ul>
+<p>但是在真正实测时，效果我感觉…Ehh..balabala…</p>
+<p>也许是我使用时的操作不当，总之是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RequestQueue requestQueue = Volley.newRequestQueue(this);</span><br><span class="line">StringRequest stringRequest = new StringRequest(...);</span><br><span class="line">requestQueue.add(stringRequest);</span><br></pre></td></tr></table></figure>
+<p>然后你们就能看到下面的测试结果。。。</p>
+<h3 id="afinal"><a href="#afinal" class="headerlink" title="afinal"></a>afinal</h3><p>开源地址：<a href="https://github.com/yangfuhai/afinal" target="_blank" rel="noopener">https://github.com/yangfuhai/afinal</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FinalHttp finalHttp = new FinalHttp();</span><br><span class="line">finalHttp.get(...);</span><br></pre></td></tr></table></figure>
+<p>恩，看上去和我们Android-async-http一样简洁。还行还行。。</p>
+<p>不过afinal还有一点比较爽的是，支持注解式代码，这个超级爽啊（其实是装逼�）。不过这也会带来另一个问题，就是给其他不熟悉的童鞋来维护代码时，猛地一看，不知道咋回事儿。orz</p>
+<h3 id="xUtils"><a href="#xUtils" class="headerlink" title="xUtils"></a>xUtils</h3><p>开源地址：<a href="https://github.com/wyouflf/xUtils" target="_blank" rel="noopener">https://github.com/wyouflf/xUtils</a></p>
+<p>不墨迹，见代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RequestParams params = new RequestParams(URL);</span><br><span class="line">params.addQueryStringParameter(&quot;wd&quot;, &quot;xUtils&quot;);</span><br><span class="line">x.http().get(...);</span><br></pre></td></tr></table></figure>
+<p>不过这里要注意，使用之前要在Application里进行初始化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x.Ext.init(this);</span><br><span class="line">x.Ext.setDebug(true);</span><br></pre></td></tr></table></figure>
+<p>并且在3.x版本后，建议还得有个BaseActivity来去初始化视图界面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    x.view().inject(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个千万不要忘记了，否则你怎么调试都不成功。马丹。。</p>
+<p>靠，直接 <code>x</code> 进行调用调用，够Geek。</p>
+<p>我有次去面试，遇到过有单位用这个框架的，然后…..对我来说并没有什么卵用，我不去有毛蛋用！！</p>
+<h3 id="ThinkAndroid"><a href="#ThinkAndroid" class="headerlink" title="ThinkAndroid"></a>ThinkAndroid</h3><p>开源地址：<a href="https://github.com/white-cat/ThinkAndroid" target="_blank" rel="noopener">https://github.com/white-cat/ThinkAndroid</a></p>
+<p>这个和上面那个鬼框架一样，用的时候一定要注意在Application里添加这一项属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:name=&quot;com.ta.TAApplication&quot;</span><br></pre></td></tr></table></figure>
+<p>不过这个也是值得称赞的，毕竟还能支持注解，跟afinal一样。</p>
+<h2 id="各框架请求所耗时的对比"><a href="#各框架请求所耗时的对比" class="headerlink" title="各框架请求所耗时的对比"></a>各框架请求所耗时的对比</h2><p>下面是各个框架在请求同一个接口时，不同次数返回的耗时结果。</p>
+<p>这里为了避免其他代码干扰测试结果，故在计算时间时，以请求开始之前计时，请求成功后第一时间进行计时，计算两个时间段的差。</p>
+<p>为了测试更加贴近真实性，我分别进行1-1000次的从低到高的请求次数的对比。当然极少情况下会一次性请求1000次，我这么做是为了能体现出不同框架在短期大量请求时，体现出其性能。并且所有测试都是在同一时间段，同一内网，没有其他设备接入无线网进行干扰的情况下进行测试的。</p>
+<ul>
+<li>第一次测试：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>请求1次</th>
+<th>请求10次</th>
+<th>请求50次</th>
+<th>请求100次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android-async-http</td>
+<td>227ms</td>
+<td>117ms</td>
+<td>254ms</td>
+<td>734ms</td>
+</tr>
+<tr>
+<td>Volley</td>
+<td>85ms</td>
+<td>151ms</td>
+<td>387ms</td>
+<td>799ms</td>
+</tr>
+<tr>
+<td>Afinal</td>
+<td>51ms</td>
+<td>48ms</td>
+<td>780ms</td>
+<td>1070ms</td>
+</tr>
+<tr>
+<td>xUtils</td>
+<td>16ms</td>
+<td>138ms</td>
+<td>287ms</td>
+<td>853ms</td>
+</tr>
+<tr>
+<td>ThinkAndroid</td>
+<td>67ms</td>
+<td>99ms</td>
+<td>332ms</td>
+<td>557ms</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>第二次测试:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>请求1次</th>
+<th>请求10次</th>
+<th>请求50次</th>
+<th>请求100次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android-async-http</td>
+<td>45ms</td>
+<td>85ms</td>
+<td>273ms</td>
+<td>494ms</td>
+</tr>
+<tr>
+<td>Volley</td>
+<td>59ms</td>
+<td>170ms</td>
+<td>409ms</td>
+<td>810ms</td>
+</tr>
+<tr>
+<td>Afinal</td>
+<td>196ms</td>
+<td>208ms</td>
+<td>551ms</td>
+<td>2382ms</td>
+</tr>
+<tr>
+<td>xUtils</td>
+<td>39ms</td>
+<td>269ms</td>
+<td>705ms</td>
+<td>610ms</td>
+</tr>
+<tr>
+<td>ThinkAndroid</td>
+<td>50ms</td>
+<td>72ms</td>
+<td>352ms</td>
+<td>810ms</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>第三次测试：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>请求1次</th>
+<th>请求10次</th>
+<th>请求50次</th>
+<th>请求100次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android-async-http</td>
+<td>60ms</td>
+<td>110ms</td>
+<td>308ms</td>
+<td>442ms</td>
+</tr>
+<tr>
+<td>Volley</td>
+<td>26ms</td>
+<td>264ms</td>
+<td>363ms</td>
+<td>706ms</td>
+</tr>
+<tr>
+<td>Afinal</td>
+<td>63ms</td>
+<td>200ms</td>
+<td>595ms</td>
+<td>1293ms</td>
+</tr>
+<tr>
+<td>xUtils</td>
+<td>60ms</td>
+<td>77ms</td>
+<td>382ms</td>
+<td>565ms</td>
+</tr>
+<tr>
+<td>ThinkAndroid</td>
+<td>44ms</td>
+<td>147ms</td>
+<td>397ms</td>
+<td>865ms</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>第四次测试：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>请求1次</th>
+<th>请求10次</th>
+<th>请求50次</th>
+<th>请求100次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android-async-http</td>
+<td>50ms</td>
+<td>92ms</td>
+<td>262ms</td>
+<td>601ms</td>
+</tr>
+<tr>
+<td>Volley</td>
+<td>41ms</td>
+<td>123ms</td>
+<td>683ms</td>
+<td>794ms</td>
+</tr>
+<tr>
+<td>Afinal</td>
+<td>57ms</td>
+<td>141ms</td>
+<td>580ms</td>
+<td>1111ms</td>
+</tr>
+<tr>
+<td>xUtils</td>
+<td>42ms</td>
+<td>216ms</td>
+<td>382ms</td>
+<td>1423ms</td>
+</tr>
+<tr>
+<td>ThinkAndroid</td>
+<td>54ms</td>
+<td>98ms</td>
+<td>650ms</td>
+<td>968ms</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>第五次测试：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>请求1次</th>
+<th>请求10次</th>
+<th>请求50次</th>
+<th>请求100次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android-async-http</td>
+<td>56ms</td>
+<td>82ms</td>
+<td>264ms</td>
+<td>484ms</td>
+</tr>
+<tr>
+<td>Volley</td>
+<td>34ms</td>
+<td>108ms</td>
+<td>676ms</td>
+<td>694ms</td>
+</tr>
+<tr>
+<td>Afinal</td>
+<td>45ms</td>
+<td>165ms</td>
+<td>566ms</td>
+<td>1070ms</td>
+</tr>
+<tr>
+<td>xUtils</td>
+<td>46ms</td>
+<td>192ms</td>
+<td>282ms</td>
+<td>730ms</td>
+</tr>
+<tr>
+<td>ThinkAndroid</td>
+<td>85ms</td>
+<td>94ms</td>
+<td>538ms</td>
+<td>1166ms</td>
+</tr>
+</tbody>
+</table>
+<p>这里我们在测试的时候，发现有些框架在运用时，尤其在请求次数非常多的情况下，如果不处理，会有卡顿UI的现象。比如Android-async-http、ThinkAndroid。所以在用是，自己一定要测试好，在塞到你们项目里，否则得不偿失。</p>
+<p>从结果上来看，挺牛的Volley在后期大量数据起来的时候，并没有真正发挥出性能（我指的是1000次的结果）。我也有说，真正使用起来很少有这么大量的使用情况。这是极端。。不过从整体上看，Volley还是比较让人满意的。</p>
+<p>但是afinal在短期量比较多的情况下，也开始慢慢被其他框架完爆了。</p>
+<p>xUtils和ThinkAndroid表现的就是比较中规中矩了</p>
+<p>而Android-async-http，表现的还比较出色，总体来看还能让人满意。</p>
+<p>当然这些结果，不能代表其框架就是这个真实水平，因为毕竟网络再怎么贴近真实，还是会有影响的。所以只能大概的看个趋势</p>
+<p><img src="http://images.doncc.org/img/Android网络请求框架调查/Android框架请求网络耗时图.png" alt="耗时趋势图"></p>
+<p>以上是对对单个接口进行get的请求情况。最后还是那句话，测试结果不代表真是效率，只能运用方便面包装盒上的一句话：图片仅供参考 orz</p>
+<p>装逼结束，请打分。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.doncc.org/2016/03/03/Android各框架的网络请求速度的对比/" data-id="cjbnf47j400016s1th2vhp409" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/26/Groovy的美妙/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Groovy的美妙
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/13/在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在InteliJ IDEA中写Dart及配置IDEA - Dart Plugin</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/小杂/">小杂</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/手工/">手工</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/">Google新技术：Instant App全拆解（4）——架构（完结）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/">Google新技术：Instant App全拆解（3）——着手</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/">Google新技术：Instant App全拆解（2）——剖析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/Google新技术：Instant App全拆解（1）——初探/">Google新技术：Instant App全拆解（1）——初探</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/09/闪电/">闪电</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Darkbug<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

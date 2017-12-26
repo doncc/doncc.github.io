@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>用Gradle构建项目 | Darkbug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在学习Gradle之前，我们有必要学习下Groovy是什么，并且如何运用。因为Gradle的前提是基于Groovy。正所谓磨刀不误砍柴工，预先善其事必先利其器。废话不多讲，我们下面介绍下Groovy是何许人也。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Gradle构建项目">
+<meta property="og:url" content="http://www.doncc.org/2016/04/12/用Gradle构建项目/index.html">
+<meta property="og:site_name" content="Darkbug">
+<meta property="og:description" content="在学习Gradle之前，我们有必要学习下Groovy是什么，并且如何运用。因为Gradle的前提是基于Groovy。正所谓磨刀不误砍柴工，预先善其事必先利其器。废话不多讲，我们下面介绍下Groovy是何许人也。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-26T08:22:21.841Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Gradle构建项目">
+<meta name="twitter:description" content="在学习Gradle之前，我们有必要学习下Groovy是什么，并且如何运用。因为Gradle的前提是基于Groovy。正所谓磨刀不误砍柴工，预先善其事必先利其器。废话不多讲，我们下面介绍下Groovy是何许人也。">
+  
+    <link rel="alternate" href="/atom.xml" title="Darkbug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Darkbug</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">永远不要去怨恨那些可被充分解释为愚蠢的事情。--汉隆的剃刀</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.doncc.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-用Gradle构建项目" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/12/用Gradle构建项目/" class="article-date">
+  <time datetime="2016-04-12T03:07:58.000Z" itemprop="datePublished">2016-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用Gradle构建项目
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在学习Gradle之前，我们有必要学习下Groovy是什么，并且如何运用。因为Gradle的前提是基于Groovy。正所谓磨刀不误砍柴工，预先善其事必先利其器。废话不多讲，我们下面介绍下Groovy是何许人也。</p>
+<a id="more"></a>
+<h1 id="Groovy是什么？"><a href="#Groovy是什么？" class="headerlink" title="Groovy是什么？"></a>Groovy是什么？</h1><p>对于Groovy的一个详细使用介绍，我已在另一个地址详细说明：<a href="http://www.doncc.org/2016/03/26/Groovy%E7%9A%84%E7%BE%8E%E5%A6%99/">传送门</a>。下面只是简单的介绍。</p>
+<p>Groovy是JVM的一个替代语言，这里的替代不是指完全的替代，而是可以在Java平台上可以进行Java编程，并且使用方法，能和现有的Java代码进行整合。</p>
+<p>那么Groovy的特点有哪些呢？</p>
+<ul>
+<li>Groovy指定的内容，都是public，除非自己另行指定。</li>
+<li>Groovy在Java对象上增加了一些快捷方式及方法，更利于使用</li>
+<li>Groovy省略了变量的类型声明。比如String str=””; 在Groovy里，就可以不用写</li>
+<li>Groovy与Java对比，是动态的，Java在定义对象类型是固定的，属于固定型语言。String str=”xxx”</li>
+<li>Groovy不必像Java那样先编译再运行，因为它属于脚本语言。脚本语言的特点就是在运行时进行解析。</li>
+</ul>
+<p>还有个非常流弊的概念，在Groovy里，一切皆对象！（你也是对象，我也是。。。）</p>
+<p>了解完我们的非常流弊的Groovy以后，我们这回就可以继续学习Gradle了。</p>
+<h1 id="Gradle是什么？"><a href="#Gradle是什么？" class="headerlink" title="Gradle是什么？"></a>Gradle是什么？</h1><h2 id="Gradle简介"><a href="#Gradle简介" class="headerlink" title="Gradle简介"></a>Gradle简介</h2><p>是以一个简介的语法，来构建一个项目。正所谓Gradle单词的含义：“摇篮”。代替之前使用的Ant来构建项目，并且能支持很多依赖关系的编译、测试等工作。</p>
+<p>为什么使用Gradle呢？</p>
+<ul>
+<li>基于Groovy，DSL（领域专用语言Domain Specific Language）可以混合各种的声明元素，用代码操控这些DSL元素，达到编程的目的</li>
+<li>使用灵活</li>
+<li>允许IDE集成*   脚本编译，能将启动时间缩减20%</li>
+</ul>
+<p>那么什么是DSL呢？</p>
+<p>DSL 定义为 “侧重特定领域的表达有限的计算机编程语言”。</p>
+<p>DSL语法，称为领域专用语言。它的作用目的不是为了像Java或者其他编程语言那样，为了解决软件开发时所遇到的问题，而是为了解决某一个特定的问题，所设计的一种计算机语言。</p>
+<p>DSL的特点像标记语言，它的特点可以被很多非程序员所轻松使用。</p>
+<p>SQL 就是一种优秀的 DSL。</p>
+<p>应用场景：<br>Ant：自己写的小项目，不大，因为ant灵活，运行又快<br>Maven：如果项目需要分享，或者达到团队内部的标准，可以使用Maven</p>
+<h2 id="Gradle结构"><a href="#Gradle结构" class="headerlink" title="Gradle结构"></a>Gradle结构</h2><p>一般情况下，Gradle文件不需要我们去手动写，而是自动生成。但不排除你在某个时候需要修改里面的配置。so我们得了解他的基本配置是如何。</p>
+<h3 id="项目级的build-gradle结构-Project-XXX"><a href="#项目级的build-gradle结构-Project-XXX" class="headerlink" title="项目级的build.gradle结构(Project: XXX)"></a>项目级的build.gradle结构(Project: XXX)</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line"><span class="comment">//项目及的文件建立，使用buildscript定义的依赖关系//</span></span><br><span class="line">    repositories &#123;</span><br><span class="line"></span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//依赖与jCenter库//</span></span><br><span class="line">    dependencies &#123;</span><br><span class="line">    classpath <span class="string">'com.android.tools.build:gradle:1.0.0'</span></span><br><span class="line"><span class="comment">//项目依赖gradle1.0版本的Android插件// </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">allprojects &#123;</span><br><span class="line"><span class="comment">//定义应用程序所需的依赖关系.//</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//应用取决于jcenter这个库//</span></span><br></pre></td></tr></table></figure>
+<h3 id="模块级的build-gradle结构-Module-app"><a href="#模块级的build-gradle结构-Module-app" class="headerlink" title="模块级的build.gradle结构(Module: app)"></a>模块级的build.gradle结构(Module: app)</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'com.android.application'</span></span><br><span class="line"><span class="comment">//标注是一个android项目，该build.gradle文件是利用Android插件//</span></span><br><span class="line">android &#123;</span><br><span class="line"><span class="comment">//所有Android项目的具体参数//</span></span><br><span class="line">    compileSdkVersion <span class="number">21</span></span><br><span class="line">    <span class="comment">//项目目标版本是这个版本.// </span></span><br><span class="line">    buildToolsVersion <span class="string">"21.1.1"</span></span><br><span class="line">    <span class="comment">////你要生成工具的版本.//</span></span><br><span class="line">	defaultConfig &#123;</span><br><span class="line">		applicationId <span class="string">"com.example.jessica.myapplication"</span></span><br><span class="line">		<span class="comment">//Defines your application’s ID. Note, earlier versions of the Android plugin used ‘packageName’ instead of ‘applicationID.’//</span></span><br><span class="line">		minSdkVersion <span class="number">16</span></span><br><span class="line">		<span class="comment">//The minimum API required by your project.//</span></span><br><span class="line">		targetSdkVersion <span class="number">21</span>     </span><br><span class="line">		<span class="comment">//The version of Android you’re developing your application for.//</span></span><br><span class="line">		versionCode <span class="number">1</span></span><br><span class="line">		versionName <span class="string">"1.0"</span></span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line"><span class="comment">//‘BuildTypes’ controls how your app is built and packaged. If you want to create your own build variants, you’ll need to add them to this section.//</span></span><br><span class="line">            minifyEnabled <span class="literal">true</span></span><br><span class="line"><span class="comment">//Gradle runs ProGuard during the build process.//</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line"><span class="comment">//Applies the default ProGuard settings from the Android SDK.// </span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line"><span class="comment">//Declares the dependencies for the current module.//</span></span><br><span class="line">   compile fileTree(<span class="string">dir:</span> <span class="string">'libs'</span>, <span class="string">include:</span> [<span class="string">'*.jar'</span>])</span><br><span class="line"><span class="comment">//Although you can add JAR files by compiling them individually, this can be time-consuming if you have lots of JARs. In this example, we’re telling Gradle to add all the JAR files in the app/libs folder.// </span></span><br><span class="line">  compile <span class="string">'com.android.support:appcompat-v7:21.0.3'</span></span><br><span class="line"><span class="comment">//To create more dependencies, add them to the depencies closure.//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="grade-wrapper-properties-Gradle-Version"><a href="#grade-wrapper-properties-Gradle-Version" class="headerlink" title="grade-wrapper.properties(Gradle Version)"></a>grade-wrapper.properties(Gradle Version)</h3><p>当你在运行初，会检查你的gradle有木有配置好。这里列举出你的gradle的home，及如果没有home的配置，如何去下载的URL。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">distributionBase=GRADLE_USER_HOME</span><br><span class="line"><span class="comment">//Determines whether the unpacked wrapper distribution should be stored in the project, or in the Gradle user home directory.//</span></span><br><span class="line">distributionPath=wrapper/dists</span><br><span class="line"><span class="comment">//The path where the Gradle distributions required by the wrapper are unzipped.//</span></span><br><span class="line">zipStoreBase=GRADLE_USER_HOME</span><br><span class="line">zipStorePath=wrapper/dists</span><br><span class="line">distributionUrl=https\:<span class="comment">//services.gradle.org/distributions/gradle-2.2.1-all.zip</span></span><br><span class="line"><span class="comment">//The URL where the correct version of Gradle should be downloaded from.//</span></span><br></pre></td></tr></table></figure>
+<h3 id="settings-gradle-Project-Settings"><a href="#settings-gradle-Project-Settings" class="headerlink" title="settings.gradle(Project Settings)"></a>settings.gradle(Project Settings)</h3><p>这个文件展示的是你项目的不同模块。如果有多个模块，在这里添加即可。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">':app'</span></span><br></pre></td></tr></table></figure>
+<h3 id="gradle-properties-Project-Properties"><a href="#gradle-properties-Project-Properties" class="headerlink" title="gradle.properties(Project Properties)"></a>gradle.properties(Project Properties)</h3><p><strong>这里包括整个项目的配置信息，你可以把你需要配置的属性添加到这个文件里。</strong></p>
+<h3 id="local-properties-SDK-Location"><a href="#local-properties-SDK-Location" class="headerlink" title="local.properties(SDK Location)"></a>local.properties(SDK Location)</h3><p>这里配置的是Android SDK的路径，告知Gradle。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sdk.dir=<span class="regexp">/Users/</span>XXX<span class="regexp">/XXX/</span>XXX/...</span><br></pre></td></tr></table></figure>
+<p>以下是改造的build.gradle：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'com.android.application'</span></span><br><span class="line">android &#123;</span><br><span class="line">compileSdkVersion <span class="number">23</span></span><br><span class="line">    buildToolsVersion <span class="string">"23.0.2"</span></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId <span class="string">"com.jikexueyuan.testandroid"</span></span><br><span class="line">        minSdkVersion <span class="number">14</span></span><br><span class="line">        targetSdkVersion <span class="number">23</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">"1.0"</span></span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="literal">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line">        &#125;</span><br><span class="line">        debug &#123;</span><br><span class="line">            minifyEnabled <span class="literal">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    signingConfigs &#123;</span><br><span class="line">        debug &#123;</span><br><span class="line">            storeFile file(<span class="string">"debug.keystore"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        release &#123;</span><br><span class="line">            storeFile file(<span class="string">"release.keystore"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    productFlavors &#123;</span><br><span class="line">        dev &#123;</span><br><span class="line">            manifestPlaceholders = [<span class="string">channel:</span> <span class="string">"dev"</span>]</span><br><span class="line">            minSdkVersion <span class="number">14</span></span><br><span class="line">            applicationId <span class="string">'com.jikexueyuan.testandroid'</span></span><br><span class="line">            targetSdkVersion <span class="number">23</span></span><br><span class="line">            versionCode <span class="number">1</span></span><br><span class="line">            versionName <span class="string">'1.0'</span></span><br><span class="line">        &#125;</span><br><span class="line">        official &#123;</span><br><span class="line">            manifestPlaceholders = [<span class="string">channel:</span> <span class="string">"official"</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        jifeng &#123;</span><br><span class="line">            manifestPlaceholders = [<span class="string">channel:</span> <span class="string">"jifeng"</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        wandoujia &#123;</span><br><span class="line">            manifestPlaceholders = [<span class="string">channel:</span> <span class="string">"wandoujia"</span>]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile fileTree(<span class="string">dir:</span> <span class="string">'libs'</span>, <span class="string">include:</span> [<span class="string">'*.jar'</span>])</span><br><span class="line">    testCompile <span class="string">'junit:junit:4.12'</span></span><br><span class="line">    compile <span class="string">'com.android.support:appcompat-v7:23.2.1'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.doncc.org/2016/04/12/用Gradle构建项目/" data-id="cjbnf47l3000t6s1tx8y7k4gc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/19/2016 Google I:O 大会小斟/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2016 Google I/O 大会小斟
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/26/Groovy的美妙/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Groovy的美妙</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/小杂/">小杂</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/手工/">手工</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/">Google新技术：Instant App全拆解（4）——架构（完结）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/">Google新技术：Instant App全拆解（3）——着手</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/">Google新技术：Instant App全拆解（2）——剖析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/Google新技术：Instant App全拆解（1）——初探/">Google新技术：Instant App全拆解（1）——初探</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/09/闪电/">闪电</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Darkbug<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Android性能优化（二） | Darkbug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="接下来的几篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可进行批评指点。 本文会从Android缓存、异步、代码及包大小来介绍如何进行性能的提升。 话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化（二）">
+<meta property="og:url" content="http://www.doncc.org/2017/02/14/Android性能优化（二）/index.html">
+<meta property="og:site_name" content="Darkbug">
+<meta property="og:description" content="接下来的几篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可进行批评指点。 本文会从Android缓存、异步、代码及包大小来介绍如何进行性能的提升。 话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/46.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/47.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/48.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/49.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/50.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/51.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/52.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/53.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/54.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/55.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/56.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/63.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/64.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/65.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/66.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/67.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/68.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/69.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/70.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/71.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/72.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/73.png">
+<meta property="og:image" content="http://images.doncc.org/img/Android性能优化/74.png">
+<meta property="og:updated_time" content="2017-12-26T08:09:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能优化（二）">
+<meta name="twitter:description" content="接下来的几篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可进行批评指点。 本文会从Android缓存、异步、代码及包大小来介绍如何进行性能的提升。 话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。">
+<meta name="twitter:image" content="http://images.doncc.org/img/Android性能优化/46.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Darkbug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Darkbug</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">永远不要去怨恨那些可被充分解释为愚蠢的事情。--汉隆的剃刀</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.doncc.org"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android性能优化（二）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/14/Android性能优化（二）/" class="article-date">
+  <time datetime="2017-02-14T02:00:50.000Z" itemprop="datePublished">2017-02-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android性能优化（二）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>接下来的几篇文章，是我总结的Android官方性能优化课程的精髓，以便供日后使用，同志们可以拿过来借鉴，亦可进行批评指点。</p>
+<p>本文会从Android缓存、异步、代码及包大小来介绍如何进行性能的提升。</p>
+<p>话前：本文部分图片源自Google发布的Android性能优化典范专题的视频截图资源。</p>
+<a id="more"></a>
+<h1 id="四、缓存机制"><a href="#四、缓存机制" class="headerlink" title="四、缓存机制"></a>四、缓存机制</h1><p>缓存机制对于任何的机制来讲，都是最高效的解决性能的问题。那么我们在Android里，可以有哪些缓存方案来供我们使用呢？</p>
+<h2 id="1）网络缓存"><a href="#1）网络缓存" class="headerlink" title="1）网络缓存"></a>1）网络缓存</h2><p>​    如果相对于从网络上直接获取数据，从本地获取已经缓存好的数据是最为高效的操作。其实在Android里，已经为我们集成好了网络缓存的方法，一种是普通请求方法，一种是URL请求方法。这里我们先说普通方法，我们只需开启<code>HttpResponseCache</code>就可以。我们这里引用官方图介绍更为直接：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/46.png" alt=""></p>
+<p>记得在开发过程中，可以使用两种策略来控制我们的返回数据：</p>
+<ul>
+<li>通过Http返回的Header中的Cache-Control的数据，来控制数据的删除与保留</li>
+<li>当缓存溢出时，删除最老的文件。</li>
+</ul>
+<p>当然使用哪种方式，是我们根据自己程序情况，需要自己考虑的。我这里找到了官方比较好的截图来说明这个问题：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/47.png" alt=""></p>
+<p>但是有时我们又不能完全的去依赖这种方式来保证数据能正常缓存。比如网络条件不好，那么我们就不能正常让<code>HttpResponseCache</code>工作，这就达不到我们缓存的目的。那么接下来，我们就可以用另外一种方式，需要自己自定义Http的缓存策略。</p>
+<p>这里我只需简单叙述下原理即可，为什么呢？因为已经有很多开源框架已经帮助我们实现了这样的缓存功能，让我们从繁琐复杂的策略中脱离出来，节省更多的业务时间。</p>
+<ul>
+<li>使用自定义类实现<code>DiskCacheManager</code>，可以运用Android提供的DiskLruCache来去实现</li>
+<li>使用Cache的缓存策略，说白了就是运用自己的策略来判断某些图片、某些数据，在本地需要保留几天。</li>
+</ul>
+<p>开源框架还用说么？<a href="https://developer.android.com/training/volley/index.html" target="_blank" rel="noopener">Volley</a>，etc.</p>
+<h2 id="2）本地缓存"><a href="#2）本地缓存" class="headerlink" title="2）本地缓存"></a>2）本地缓存</h2><p>对于本地缓存，我们能做文章的地方就可以太多太多了，能存储的种类也可以变得更为丰富。本地缓存我们可以想到诸如File、Preference、SQLite等，都可以实现缓存数据。记得在很多年前开发Android时，那时的手机速度并不如现在的速度，所以在网络一旦不好的情况下，我们在跳转到一个界面后，因为数据不能及时回馈，只能让用户干等着一个白白的页面，什么都看不到。这样的体验真的很好么？我反正觉得是非常不好。</p>
+<p>那么运用本地缓存，我们可以将一些简单的数据，存储到本地，这样以来我们在到一个新的界面后，先展现一部分数据，不至于让用户干等着新数据不回来。相比而言，这样的体验会更好一些。</p>
+<p>然而这里我想说的是，并不是所有的操作都要用本地缓存的方式。这需要和自身情况相结合，一些非常重要的非常频繁的操作界面，我们需要预先在界面展现一些数据给用户。</p>
+<h2 id="3）图片缓存"><a href="#3）图片缓存" class="headerlink" title="3）图片缓存"></a>3）图片缓存</h2><p>在图片缓存上，我们可以借助官方所推荐的运用<code>LruCache</code>帮助我们缓存Bitmap，使在图片的显示上能将效率提升。这里我们参考官网的内容更为直接：<a href="https://developer.android.com/topic/performance/graphics/manage-memory.html" target="_blank" rel="noopener">https://developer.android.com/topic/performance/graphics/manage-memory.html</a></p>
+<h1 id="五、代码及包大小的优化"><a href="#五、代码及包大小的优化" class="headerlink" title="五、代码及包大小的优化"></a>五、代码及包大小的优化</h1><p>对于这一块的知识，是比较散碎的，因为在整个APP内，任何一块儿只要注意一点儿，就能间接地给整个程序带来性能的提升，包的大小小了，负担也就小了。</p>
+<h2 id="1）在集合容器迭代方式上的优化"><a href="#1）在集合容器迭代方式上的优化" class="headerlink" title="1）在集合容器迭代方式上的优化"></a>1）在集合容器迭代方式上的优化</h2><p>我们在做Java的时候，会经常使用<code>Iterator</code>来遍历容器。但是在Android里它就并没有那么高效了。这一点我们可以从官方所演示的代码里能看出个究竟，我们这里依然引用官方的图来解释：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/48.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/49.png" alt=""></p>
+<p><img src="http://images.doncc.org/img/Android性能优化/50.png" alt=""></p>
+<p>我们这三种遍历的方式，如果在同一个设备上进行速度对比，结果很明显如下图：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/51.png" alt=""></p>
+<p>当然这个结果也不是最为准确的数据，只能是大概的一个方向。而且官方也有提到，在不同的平台编译器下，性能速度也不尽相同。所以还是酌情定论。</p>
+<h2 id="2）正确使用Service"><a href="#2）正确使用Service" class="headerlink" title="2）正确使用Service"></a>2）正确使用Service</h2><p>Service作为四大组件中的一个角色，想必我们最不陌生了。但是又有多少童鞋能正确的使用Service呢？我们都知道Service是运行在后台，这就有可能会带来问题，如果使用不当，那么会有可能消耗我们宝贵的电量。</p>
+<p>关于Service是有什么样的启动方式，这里我就不再赘述，既然你已经看到我们性能优化的课程，那么我相信你一定掌握了Service的基本用法。这里我只给大家提一些使用建议，这些要切记：</p>
+<ul>
+<li>不应该在Service内对服务器进行轮询，这是一个非常糟糕的做法，你应该参考前面所讲述的，制定一些请求策略；</li>
+<li>如果Service内部任务执行在后台的线程内时，应使用IntentService，或者结合使用HandlerThread、AsyncTask、Loader等辅助方式来去实现。</li>
+</ul>
+<p>后续我们会详细介绍有关异步任务的使用方式。</p>
+<h2 id="3）优化启动时间"><a href="#3）优化启动时间" class="headerlink" title="3）优化启动时间"></a>3）优化启动时间</h2><p>在之前做开发的时候，那个时候大家还不知道用“广告障眼法”的方法来蒙蔽我们的眼睛的时候，我们只能无奈为什么我们自己开发的程序在第一次启动时那么卡顿不流畅。而且我们在刚接触Android开发之时，已经习惯在Activity的onCreate方法内做一系列的初始化动作。事实上时到今天，我们不难发现，有些初始化的工作不必要一定放在Activity的onCreate里一气呵成地进行初始化，在入口函数里进行过多的任务，势必会造成启动耗时的问题。</p>
+<p>那么我们可以把一些不紧急的任务进行延时处理，先把一些必要呈现的组件进行初始化。这样操作下来，你的应用程序在启动到程序界面的速度就会有很大的提升。官方这里也给我们比喻了一张很形象的图，可以作为业务参考之用：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/52.png" alt=""></p>
+<p>比如像在Application里，我们可以预分配Bitmaps，这样我们在主界面时可以快速获得Bitmap对象，然后进行图形呈现。这样就能提升我们的程序展现性能。</p>
+<p>并且，我们在主页面的布局，不要过于繁琐，因为从前面的知识我们可知，过于繁琐的界面，加载起来性能会大打折扣，随之而来的就是展现的不流畅。</p>
+<h2 id="4）Gradle配置减小包大小"><a href="#4）Gradle配置减小包大小" class="headerlink" title="4）Gradle配置减小包大小"></a>4）Gradle配置减小包大小</h2><p>混淆代码这项技能对于我们来讲不是难事，但是你知道么，Android为我们提供的工具Proguard，另外的一个功能就是能帮助我们把程序内无用的代码去掉，以减小整个程序的包大小。在Android Studio里，对代码的混淆变得更为简单，只需在build.gradle文件中进行配置即可。同时光对无用代码进行缩减还不够，我们还需要对整个程序的Library进行筛查，确定在打包时去掉那些没有用到的Library。并且我们程序包内还有可能包括那些没有用到的资源文件。索性Gradle帮我们做了这些繁琐的工作，我们只需在build.gradle配置文件里进行配置即可。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    ...</span><br><span class="line">	buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="keyword">true</span> <span class="comment">//使混淆，去掉无用Library</span></span><br><span class="line">            shrinkResources <span class="keyword">true</span> <span class="comment">//去掉无用资源</span></span><br><span class="line">            <span class="function">proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</span></span><br><span class="line"><span class="function">        &#125;</span></span><br><span class="line"><span class="function">    &#125;</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>当然，Proguard的使用和之前在Eclipse下开发一样，不能非常智能的判断出到底哪些需要混淆哪些不需要。如果我们不需要某个代码进行混淆，我们可以将配置添加到Proguard内即可。</p>
+<h2 id="5）减小图片资源量"><a href="#5）减小图片资源量" class="headerlink" title="5）减小图片资源量"></a>5）减小图片资源量</h2><p>我们都知道，一个应用好不好，第一印象就是我们的程序是不是过大。减少程序内的图片的量是我们要考虑的一个方向。如果需求允许，我们可以使用Android自带的一些图标作为应用内之用，当然也可以自己的图片一图多用。并且我们还可以使用另外的一种方式：使用<a href="https://developer.android.com/reference/android/graphics/drawable/VectorDrawable.html" target="_blank" rel="noopener">VectorDrawable</a>来代替我们的PNG/JPEG图。那么VectorDrawable是什么意思呢？简单来说，其思想是类似的图片，如果可以用一张图来表达，另一张图完全可以不用加入，只需一个xml配置文件，更改其方向或其他属性即可。这里我引用官方一个图解更为清晰，你一看就明白：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/53.png" alt=""></p>
+<p>我们只用了一个配置文件，实现了两个图片的意思。</p>
+<p>虽然这些不起眼的优化，但是如果量多了，在一定程度上能对我们的应用本身瘦身。</p>
+<h2 id="6）根据不同平台拆分安装包"><a href="#6）根据不同平台拆分安装包" class="headerlink" title="6）根据不同平台拆分安装包"></a>6）根据不同平台拆分安装包</h2><p>我们都知道，自己做的应用需要适配从某低版本到某高版本之间的机型，那么在不同的适配文件夹内就有不同的资源文件。我们之前的做法很简单，将程序打包，发布。这样导致的后果就是一旦适配屏幕过多，你的资源也就越来越多，整个APP的大小也就越大。索性Android为我们提供了更好的解决方案，提供拆分安装包的功能，对于不同平台发布之时，可以配置不同信息，最大程度上减少不必要的资源的引入。具体的教程可以参考官方的资源，这里不再赘述：<a href="https://developer.android.com/studio/build/configure-apk-splits.html" target="_blank" rel="noopener">Configure APK Splits</a></p>
+<h2 id="7）序列化性能的提升"><a href="#7）序列化性能的提升" class="headerlink" title="7）序列化性能的提升"></a>7）序列化性能的提升</h2><p>序列化我们肯定接触过，还是老样子，我们先来看看序列化是怎么一回事儿，再从工作原理来分析性能问题。这里我们依旧引入官方一张图：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/54.png" alt=""></p>
+<p>假如我们图中的代码，需要序列化成一种数据形式，甚至还需要反序列化成具体类。那么这个过程，如果我们运用老方法，实现<code>Serializable</code>接口的形式，像我们下面图中所做的那样：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/55.png" alt=""></p>
+<p>这样做真的很好吗？未必，其实在Android内，这样做的后果在进行序列化的过程中，会消耗更多的内存资源。所以我们不是很推荐这么使用。那该如何使用呢？</p>
+<p>当然我们可以使用Google所推荐的GSON库的方法：然而。。。</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/56.png" alt=""></p>
+<p>不过Android推荐我们使用另外的一个方案，使用<code>Parcelable</code>，这在减少内存消耗上有着很好的优势。当然，我们也同样可以使用<code>SQLite</code>和<code>SharedPreference</code>来存储序数据，避免序列化的繁琐操作。</p>
+<h1 id="六、使用异步任务"><a href="#六、使用异步任务" class="headerlink" title="六、使用异步任务"></a>六、使用异步任务</h1><p>异步任务对于Android处理任务来讲，是非常推荐的。那么我们这里整理了四种异步任务，我们可以根据具体情况进行使用。</p>
+<p>在谈到异步任务之前，我们首先还是老规矩，要先理解线程执行的方式。我们这里依然引入官方的图说明最为直接：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/63.png" alt=""></p>
+<p>从图可知，线程执行的过程，包括了线程起始状态、线程运行状态和线程结束状态。那么在执行的过程中，需要不断的进行任务处理。但是图中只是固定多的任务。如果我们在执行过程中，有很多任务，我们就得需要不断的从另外一个任务队列里来获取新任务进行处理。这时候就有了下面的这样的情况：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/64.png" alt=""></p>
+<p>然而这一系列的管理，从任务队列去取任务，然后又有其他任务加入到任务队列。。这一大趟下来恐怕很多人就已经晕掉了。然而Android官方已经为我们提供了更好的模型之一，那就是HandlerThread模型。</p>
+<h2 id="1）HandlerThread"><a href="#1）HandlerThread" class="headerlink" title="1）HandlerThread"></a>1）HandlerThread</h2><p>我们知道，在Android里，如UI等绘制过程都是在主线程内操作的。但是一旦其他任务过多，我们不能影响主线程的操作，所以需要不断的来启动其他线程来处理任务。HandlerThread模型内，有三种重要的角色来担当：MessageQueue、Looper、Handler。</p>
+<p>我们一一来介绍其用意。</p>
+<ul>
+<li>MessageQueue：消息队列</li>
+</ul>
+<p><img src="http://images.doncc.org/img/Android性能优化/65.png" alt=""></p>
+<p>消息队列里充斥着Intent、Runnable、Message等任务的载体，这些排列在消息队列里；</p>
+<ul>
+<li>Looper：消息循环的线程</li>
+</ul>
+<p><img src="http://images.doncc.org/img/Android性能优化/66.png" alt=""></p>
+<p>消息循环的线程，能保证线程的存活，能不断从消息队列里获取任务，执行任务；</p>
+<ul>
+<li>Handler：消息处理器</li>
+</ul>
+<p><img src="http://images.doncc.org/img/Android性能优化/67.png" alt=""></p>
+<p>消息处理器可以对消息队列里的消息进行管理，同时能够将其他线程的消息插入到消息队列里的位置。这个位置可以是你所想要的位置。</p>
+<p>一旦这三个角色协同工作，那么其工作机制如下图所示：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/68.png" alt=""></p>
+<h2 id="2）AsyncTask"><a href="#2）AsyncTask" class="headerlink" title="2）AsyncTask"></a>2）AsyncTask</h2><p>假如我们点击了按钮，需要请求网络服务器下载一张图片，同时需要呈现给用户一个等待的菊花圈。那么这个过程如果我们直接在UI线程上操作的话，一旦网络状况不好，我们就只能阻塞UI线程等待图片下载完毕。况且现在Android不允许这么操作了。如果有下面这种模型的方式就更好了：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/69.png" alt=""></p>
+<p>事实上，我们有，那就是<code>AsyncTask</code>，它的工作过程是这样的：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/70.png" alt=""></p>
+<p>但是我们在使用时，有时会因为使用AsyncTask使用不当，导致出现问题：</p>
+<ul>
+<li>因为AsyncTask的任务调度都是线性的过程，所以一旦同时执行N多个，那只能按照顺序去执行AsyncTask任务。那么也就是说，一旦中途有一个任务执行的时间过长，那只能阻塞其他的AsyncTask。这就不太符合我们用AsyncTask的初衷了吧：</li>
+</ul>
+<p><img src="http://images.doncc.org/img/Android性能优化/71.png" alt=""></p>
+<ul>
+<li>因为是异步任务，我们的需求有可能就在异步任务执行的过程中，需求突然中止了。那么我们就不应该继续执行异步任务接下来的工作了。虽然AsyncTask为我们提供了<code>cancel()</code>方法，但这不能完整的中止我们的异步任务内容。我们需要手动在代码里进行判断，利用<code>onCancelled()</code>来判断是否中止掉了，从而不再继续执行<code>onPostExecute()</code>，不再继续执行异步任务的接下来工作了。可以参考官方的代码逻辑：</li>
+</ul>
+<p><img src="http://images.doncc.org/img/Android性能优化/72.png" alt=""></p>
+<ul>
+<li><p>我们都知道，AsyncTask的调用，可能在Activity中。这就有可能会产生内存泄漏的严重问题。一旦把AsyncTask写成像下面在内部书写的样子，就会很容易出现问题：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/73.png" alt=""></p>
+</li>
+</ul>
+<h2 id="3）ThreadPool"><a href="#3）ThreadPool" class="headerlink" title="3）ThreadPool"></a>3）ThreadPool</h2><p>线程池概念的引入，能更好的分配大任务，将效率提高到最高。我们可以使用<code>ThreadPoolExecutor</code>来使用线程池，但是在用起来也需要注意几点：</p>
+<ul>
+<li>线程池在定义时一定要注意，<code>Runtime.getRuntime().availableProcesser()</code>这个方法返回的数据不是真实CPU的核心数，而是激活的核心数，因为有的核心有可能被休眠；</li>
+<li>因为<code>ThreadPoolExecutor</code>是<code>Executors</code>类的底层实现，所以推荐程序员使用<code>Executors</code>的工厂方法来创建；</li>
+<li>创建的线程池有不同之分，根据自己的需求来选择创建：<ul>
+<li><code>Executors.newCachedThreadPool()</code>：无边界线程池，大小会自己扩展，内容可以进行自动线程回收；</li>
+<li><code>Executors.newFixedThreadPool(int)</code>：池子大小是固定的；</li>
+<li><code>Executors.newSingleThreadExecutor()</code>：单个后台线程；</li>
+</ul>
+</li>
+</ul>
+<h2 id="4）IntentService"><a href="#4）IntentService" class="headerlink" title="4）IntentService"></a>4）IntentService</h2><p>我们都知道，Service是运行在主线程的。但是如果想要Service里去执行其他的任务，很容易会影响到主线程的性能。我们之前已经介绍过有HandlerThread模型，也有AsyncTask模型，同样IntentService也可以做到，除了同样具备异步处理的能力，且还具备Service的生命周期不被页面的生命周期所影响的优点。这里我们再次引入官方的一张图来看下其工作机制：</p>
+<p><img src="http://images.doncc.org/img/Android性能优化/74.png" alt=""></p>
+<p>当然使用IntentService也需要注意几点：</p>
+<ul>
+<li>使用IntentService时，如果需要将信息返回给UI主线程的话，一般会结合BroadcastReceiver的处理，使任务信息返回；</li>
+<li>IntentService同AsyncTask一样，内部都是实现的HandlerThread，所以如果中间有一个任务出现花费时间比较长，其他任务也同样会出现阻塞状态。</li>
+</ul>
+<p>总得来说，四种异步任务，我们给大致区分下功能：</p>
+<ul>
+<li>HandlerThread：适合给某个任务设置一个专属的线程执行，或者某个任务有回调的方式；</li>
+</ul>
+<ul>
+<li>AsyncTask：是任务执行线程与UI线程之间快速交互的一种异步任务方式，适合立即启动的情况，且执行周期很短的任务；</li>
+<li>IntentService：适合在UI线程上调动Service后台，并且Service后台执行某种回馈时需要返回给UI线程的情况；</li>
+</ul>
+<ul>
+<li>ThreadPool：适合并发处理一些复杂任务，把一个任务单元分解成多个任务单元。</li>
+</ul>
+<p>由于个人能力有限，暂时总结到这里。如果内容有什么出入，欢迎指点批评。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.doncc.org/2017/02/14/Android性能优化（二）/" data-id="cjbnf47jo00046s1tu3bgwf4e" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/21/罗技M337鼠标改装静音鼠标/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          罗技M337鼠标改装静音鼠标
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/13/Android性能优化（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android性能优化（一）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/小杂/">小杂</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/手工/">手工</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/20/Google新技术：Instant App全拆解（4）——架构（完结）/">Google新技术：Instant App全拆解（4）——架构（完结）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/22/Google新技术：Instant App全拆解（3）——着手/">Google新技术：Instant App全拆解（3）——着手</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/14/Google新技术：Instant App全拆解（2）——剖析/">Google新技术：Instant App全拆解（2）——剖析</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/29/Google新技术：Instant App全拆解（1）——初探/">Google新技术：Instant App全拆解（1）——初探</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/09/闪电/">闪电</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Darkbug<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
